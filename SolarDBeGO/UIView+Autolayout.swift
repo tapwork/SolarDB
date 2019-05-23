@@ -47,6 +47,16 @@ public extension AutoLayoutContainer {
     }
 
     @discardableResult
+    func pinTop(to constraint: NSLayoutAnchor<NSLayoutYAxisAnchor>, inset: CGFloat = 0) -> NSLayoutConstraint {
+        if let view = self as? UIView {
+            view.translatesAutoresizingMaskIntoConstraints = false
+        }
+        let constraint = topAnchor.constraint(equalTo: constraint, constant: inset)
+        constraint.isActive = true
+        return constraint
+    }
+
+    @discardableResult
     func pinLeading(to constraint: NSLayoutAnchor<NSLayoutXAxisAnchor>, inset: CGFloat = 0) -> NSLayoutConstraint {
         if let view = self as? UIView {
             view.translatesAutoresizingMaskIntoConstraints = false
@@ -67,21 +77,11 @@ public extension AutoLayoutContainer {
     }
 
     @discardableResult
-    func pinToTop(of container: AutoLayoutContainer, inset: CGFloat = 0) -> NSLayoutConstraint {
+    func pinBottom(to constraint: NSLayoutAnchor<NSLayoutYAxisAnchor>, inset: CGFloat = 0) -> NSLayoutConstraint {
         if let view = self as? UIView {
             view.translatesAutoresizingMaskIntoConstraints = false
         }
-        let constraint = topAnchor.constraint(equalTo: container.topAnchor, constant: inset)
-        constraint.isActive = true
-        return constraint
-    }
-
-    @discardableResult
-    func pinToBottom(of container: AutoLayoutContainer, inset: CGFloat = 0) -> NSLayoutConstraint {
-        if let view = self as? UIView {
-            view.translatesAutoresizingMaskIntoConstraints = false
-        }
-        let constraint = bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -inset)
+        let constraint = bottomAnchor.constraint(equalTo: constraint, constant: -inset)
         constraint.isActive = true
         return constraint
     }

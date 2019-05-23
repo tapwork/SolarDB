@@ -16,6 +16,7 @@
 		72BA14032296A5CD00DD005B /* SolarDBeGOUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BA14022296A5CD00DD005B /* SolarDBeGOUITests.swift */; };
 		72DAA1512296A9B900FBF335 /* SunViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DAA1502296A9B900FBF335 /* SunViewController.swift */; };
 		72DAA1532296AAFB00FBF335 /* UIView+Autolayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DAA1522296AAFB00FBF335 /* UIView+Autolayout.swift */; };
+		72DAA1552296B52900FBF335 /* String+Watt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DAA1542296B52900FBF335 /* String+Watt.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 		72BA14042296A5CD00DD005B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		72DAA1502296A9B900FBF335 /* SunViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunViewController.swift; sourceTree = "<group>"; };
 		72DAA1522296AAFB00FBF335 /* UIView+Autolayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Autolayout.swift"; sourceTree = "<group>"; };
+		72DAA1542296B52900FBF335 /* String+Watt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Watt.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +111,7 @@
 				72BA13EE2296A5CD00DD005B /* Info.plist */,
 				72DAA1502296A9B900FBF335 /* SunViewController.swift */,
 				72DAA1522296AAFB00FBF335 /* UIView+Autolayout.swift */,
+				72DAA1542296B52900FBF335 /* String+Watt.swift */,
 			);
 			path = SolarDBeGO;
 			sourceTree = "<group>";
@@ -263,6 +266,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				72BA13E52296A5CC00DD005B /* RootViewController.swift in Sources */,
+				72DAA1552296B52900FBF335 /* String+Watt.swift in Sources */,
 				72DAA1532296AAFB00FBF335 /* UIView+Autolayout.swift in Sources */,
 				72DAA1512296A9B900FBF335 /* SunViewController.swift in Sources */,
 				72BA13E32296A5CC00DD005B /* AppDelegate.swift in Sources */,
