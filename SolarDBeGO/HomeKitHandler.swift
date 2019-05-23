@@ -14,7 +14,6 @@ protocol HomeKitHandlerDelegate: class {
 }
 
 class HomeKitHandler: NSObject {
-    var homes = [HMHome]()
     weak var delegate: HomeKitHandlerDelegate?
     private lazy var homeManager: HMHomeManager = {
         let home = HMHomeManager()
@@ -23,7 +22,7 @@ class HomeKitHandler: NSObject {
     }()
 
     var home: HMHome? {
-        return homes.first
+        return homeManager.homes.first
     }
 
     var outlets: [HMAccessory]? {
