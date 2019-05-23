@@ -18,33 +18,25 @@ class HomeKitHandler: NSObject {
     private lazy var homeManager = HMHomeManager()
     private lazy var accessoryBrowser = HMAccessoryBrowser()
     var home: HMHome?
-    var outlets = [PowerOutlet]()
-    func start() {
-        home = nil
-        homeManager.delegate = self
+    var outlets = [PowerOutlet]() {
+        didSet {
+            delegate?.homeKitHandlerDidUpdate(self, outlets: outlets)
+        }
     }
 
-    func startBrowsingAccessory() {
+    func start() {
+        home = nil
         outlets.removeAll()
-        accessoryBrowser.delegate = self
-        accessoryBrowser.startSearchingForNewAccessories()
+        homeManager.delegate = self
     }
 }
 
 extension HomeKitHandler: HMHomeManagerDelegate {
     func homeManagerDidUpdateHomes(_ manager: HMHomeManager) {
         home = manager.homes.filter {$0.name == "e GO Headquarters"}.first
-        if home != nil {
-            startBrowsingAccessory()
+        if let acc = home?.accessories.first {
+            let outlet = PowerOutlet(outlet: acc)
+            outlets.append(outlet)
         }
-    }
-}
-
-extension HomeKitHandler: HMAccessoryBrowserDelegate {
-    func accessoryBrowser(_ browser: HMAccessoryBrowser, didFindNewAccessory accessory: HMAccessory) {
-        if accessory.category.categoryType == HMServiceTypeOutlet {
-            outlets.append(PowerOutlet(outlet: accessory))
-        }
-        delegate?.homeKitHandlerDidUpdate(self, outlets: outlets)
     }
 }

@@ -17,25 +17,28 @@ class PowerOutlet {
     }
 
     private let outlet: HMAccessory
-    var state: State = .off
+    var state: State? {
+        didSet {
+            if oldValue != state {
+                toggle()
+            }
+        }
+    }
 
     // MARK: Init
     init(outlet: HMAccessory) {
         self.outlet = outlet
-//        let characteristic = outlet.find(serviceType: HMServiceTypeOutlet, characteristicType: HMCharacteristicMetadataFormatBool)
-//        let characteristics = outlet.services.flatMap {$0.characteristics.compactMap{$0.characteristicType }}
-//        let metaData = characteristics.compactMap {$0.metadata}
-//        if let toggleMeta = metaData.filter ({$0.format == HMCharacteristicMetadataFormatBool}).first {
-//            self.state = ch
-//        }
     }
-}
 
-extension HMAccessory {
-    func find(serviceType: String, characteristicType: String) -> HMCharacteristic? {
-        return services.lazy
-            .filter { $0.serviceType == serviceType }
-            .flatMap { $0.characteristics }
-            .first { $0.metadata?.format == characteristicType }
+    private func toggle() {
+        if let service = outlet.services.filter({
+            return $0.serviceType == HMServiceTypeOutlet
+        }).first, let power = service.characteristics.filter({
+            return $0.characteristicType == HMCharacteristicTypePowerState
+        }).first {
+            power.writeValue(state == .on ? 1 : 0) {
+                print($0 ?? "Success")
+            }
+        }
     }
 }

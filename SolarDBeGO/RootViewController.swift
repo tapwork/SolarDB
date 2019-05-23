@@ -66,20 +66,24 @@ class RootViewController: UIViewController {
 extension RootViewController: PowerSliderViewControllerDelegate {
     func powerSliderViewController(_ powerSliderViewController: PowerSliderViewController,
                                    didUpdate viewModel: PowerSliderViewModel) {
-        triggerOutletIfNeeded()
+        toggleOutletIfNeeded()
     }
 
-    func triggerOutletIfNeeded() {
+    func toggleOutletIfNeeded() {
+        guard sunViewController.viewModel.watt > 0 else {
+            homeKitHandler.outlets.forEach {$0.state = .off}
+            return
+        }
         if sunViewController.viewModel.watt >= powerPlugViewController.viewModel.watt {
-            // turn on
+            homeKitHandler.outlets.forEach {$0.state = .on}
         } else {
-            // turn off
+            homeKitHandler.outlets.forEach {$0.state = .off}
         }
     }
 }
 
 extension RootViewController: HomeKitHandlerDelegate {
     func homeKitHandlerDidUpdate(_ homeKitHandler: HomeKitHandler, outlets: [PowerOutlet]) {
-
+        toggleOutletIfNeeded()
     }
 }
