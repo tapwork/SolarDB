@@ -39,7 +39,7 @@ class RootViewController: UIViewController {
         addSunViewController()
         addPowerPlugViewController()
         homeKitHandler.delegate = self
-        homeKitHandler.outlets
+        homeKitHandler.start()
     }
 
     // MARK: Setup
@@ -73,7 +73,11 @@ extension RootViewController: PowerSliderViewControllerDelegate {
 }
 
 extension RootViewController: HomeKitHandlerDelegate {
-    func homeKitHandler(_ homeKitHandler: HomeKitHandler, didUpdate: [HMHome]) {
+    func homeKitHandlerDidUpdate(_ homeKitHandler: HomeKitHandler, homes: [HMHome]) {
+
+    }
+
+    func homeKitHandlerDidUpdate(_ homeKitHandler: HomeKitHandler, accessories: [HMAccessory]) {
 
     }
 }

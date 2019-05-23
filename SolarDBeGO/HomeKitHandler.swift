@@ -10,7 +10,8 @@ import Foundation
 import HomeKit
 
 protocol HomeKitHandlerDelegate: class {
-    func homeKitHandler(_ homeKitHandler: HomeKitHandler, didUpdate: [HMHome])
+    func homeKitHandlerDidUpdate(_ homeKitHandler: HomeKitHandler, homes: [HMHome])
+    func homeKitHandlerDidUpdate(_ homeKitHandler: HomeKitHandler, accessories: [HMAccessory])
 }
 
 class HomeKitHandler: NSObject {
@@ -20,18 +21,33 @@ class HomeKitHandler: NSObject {
         home.delegate = self
         return home
     }()
-
+    private lazy var accessoryBrowser: HMAccessoryBrowser = {
+        let browser = HMAccessoryBrowser()
+        browser.delegate = self
+        return browser
+    }()
     var home: HMHome? {
         return homeManager.homes.first
     }
-
+    var accessories = [HMAccessory]()
     var outlets: [HMAccessory]? {
-        return home?.accessories
+        return accessories.filter {$0.category.categoryType == "Outlet"}
+    }
+
+    func start() {
+        accessoryBrowser.startSearchingForNewAccessories()
     }
 }
 
 extension HomeKitHandler: HMHomeManagerDelegate {
     func homeManagerDidUpdateHomes(_ manager: HMHomeManager) {
-        delegate?.homeKitHandler(self, didUpdate: manager.homes)
+        delegate?.homeKitHandlerDidUpdate(self, homes: manager.homes)
+    }
+}
+
+extension HomeKitHandler: HMAccessoryBrowserDelegate {
+    func accessoryBrowser(_ browser: HMAccessoryBrowser, didFindNewAccessory accessory: HMAccessory) {
+        accessories.append(accessory)
+        delegate?.homeKitHandlerDidUpdate(self, accessories: accessories)
     }
 }
