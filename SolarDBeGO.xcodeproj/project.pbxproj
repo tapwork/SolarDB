@@ -20,7 +20,7 @@
 		72DAA15F2296BAB700FBF335 /* PowerSliderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DAA15E2296BAB700FBF335 /* PowerSliderViewController.swift */; };
 		72DAA1612296BAF700FBF335 /* PowerSliderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DAA1602296BAF700FBF335 /* PowerSliderViewModel.swift */; };
 		72DAA1632296D5BF00FBF335 /* PowerOutlet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DAA1622296D5BF00FBF335 /* PowerOutlet.swift */; };
-		72DAA1652296E56E00FBF335 /* HomeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72DAA1642296E56E00FBF335 /* HomeKit.framework */; };
+		72DAA1752296EB8E00FBF335 /* HomeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72DAA1742296EB8D00FBF335 /* HomeKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,7 +61,7 @@
 		72DAA15E2296BAB700FBF335 /* PowerSliderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerSliderViewController.swift; sourceTree = "<group>"; };
 		72DAA1602296BAF700FBF335 /* PowerSliderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerSliderViewModel.swift; sourceTree = "<group>"; };
 		72DAA1622296D5BF00FBF335 /* PowerOutlet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerOutlet.swift; sourceTree = "<group>"; };
-		72DAA1642296E56E00FBF335 /* HomeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HomeKit.framework; path = System/Library/Frameworks/HomeKit.framework; sourceTree = SDKROOT; };
+		72DAA1742296EB8D00FBF335 /* HomeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HomeKit.framework; path = System/Library/Frameworks/HomeKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,7 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				72DAA1652296E56E00FBF335 /* HomeKit.framework in Frameworks */,
+				72DAA1752296EB8E00FBF335 /* HomeKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -152,7 +152,7 @@
 		72DAA1582296B8FB00FBF335 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				72DAA1642296E56E00FBF335 /* HomeKit.framework */,
+				72DAA1742296EB8D00FBF335 /* HomeKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -406,7 +406,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -461,7 +461,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
