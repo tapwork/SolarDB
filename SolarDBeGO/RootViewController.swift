@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import HomeKit
 
 class RootViewController: UIViewController {
 
@@ -29,12 +30,16 @@ class RootViewController: UIViewController {
         return PowerSliderViewController(viewModel: viewModel)
     }()
 
+    lazy var homeKitHandler = HomeKitHandler()
+
     // MARK: View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
         addSunViewController()
         addPowerPlugViewController()
+        homeKitHandler.delegate = self
+        homeKitHandler.outlets
     }
 
     // MARK: Setup
@@ -64,5 +69,11 @@ extension RootViewController: PowerSliderViewControllerDelegate {
         if powerSliderViewController === powerPlugViewController {
             // Start or stop
         }
+    }
+}
+
+extension RootViewController: HomeKitHandlerDelegate {
+    func homeKitHandler(_ homeKitHandler: HomeKitHandler, didUpdate: [HMHome]) {
+
     }
 }

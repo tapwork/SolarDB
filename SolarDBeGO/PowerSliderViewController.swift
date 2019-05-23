@@ -44,6 +44,7 @@ class PowerSliderViewController: UIViewController {
     private func setupSlider() {
         view.addSubview(slider)
         slider.pinToEdges([.left, .right], of: view, inset: 5)
+        slider.centerY(of: view)
         slider.isContinuous = true
         slider.addTarget(self, action: #selector(updatePeak), for: .primaryActionTriggered)
     }
@@ -56,17 +57,17 @@ class PowerSliderViewController: UIViewController {
         titleLabel.centerX(of: view)
         titleLabel.textColor = viewModel.fontColor
 
-        maxPeakLabel.text = "\(viewModel.maxPeak) kW (Peak)"
-        view.addSubview(maxPeakLabel)
-        maxPeakLabel.centerY(of: slider)
-        maxPeakLabel.pinLeading(to: slider.trailingAnchor, inset: 5)
-        maxPeakLabel.pinTrailing(to: view.trailingAnchor, inset: 5)
-        maxPeakLabel.textColor = viewModel.fontColor
+//        maxPeakLabel.text = "\(viewModel.maxPeak) kW (Peak)"
+//        view.addSubview(maxPeakLabel)
+//        maxPeakLabel.centerY(of: slider)
+//        maxPeakLabel.pinLeading(to: slider.trailingAnchor, inset: 5)
+//        maxPeakLabel.pinTrailing(to: view.trailingAnchor, inset: 5)
+//        maxPeakLabel.textColor = viewModel.fontColor
 
-//        view.addSubview(currentPeakLabel)
-//        currentPeakLabel.pinTop(to: slider.bottomAnchor, inset: 15)
-//        currentPeakLabel.centerX(of: slider)
-//        currentPeakLabel.textColor = viewModel.fontColor
+        view.addSubview(currentPeakLabel)
+        currentPeakLabel.pinTop(to: slider.bottomAnchor, inset: 15)
+        currentPeakLabel.centerX(of: slider)
+        currentPeakLabel.textColor = viewModel.fontColor
         updatePeak()
     }
 
