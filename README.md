@@ -7,6 +7,12 @@
 * Manuel & Christian have a solar panel installation on their roof in 2018
 * We have the same inverter model which has a simple iOS app. This app just shows the electric production
 
+## Motivation
+* Use and produce green energy
+* Charge your car with low costs!
+* To be independent from big energy corporations (i.e. RWE) 
+* Less coal! More Solar powered energy. 
+* Reduce the carbon footprint!
 
 ## Background
 
