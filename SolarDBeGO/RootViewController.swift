@@ -36,11 +36,11 @@ class RootViewController: UIViewController {
 
     // MARK: Properties
     lazy var sunViewController: PowerSliderViewController = {
-        return PowerSliderViewController(viewModel: PowerSliderViewModel.sun)
+        return PowerSliderViewController(viewModel: PowerSliderViewModel(type: .sun))
     }()
 
     lazy var powerPlugViewController: PowerSliderViewController = {
-        return PowerSliderViewController(viewModel: PowerSliderViewModel.outlet)
+        return PowerSliderViewController(viewModel: PowerSliderViewModel(type: .outlet))
     }()
     lazy var loadingViewController = LoadingViewController()
     lazy var batteryViewController = BatteryViewController()
@@ -114,11 +114,12 @@ class RootViewController: UIViewController {
 
     func toggleOutletIfNeeded() {
         var state = homeKitHandler.outlet?.state
-        guard sunViewController.viewModel.watt > 0, powerPlugViewController.viewModel.watt > 0 else {
+        guard let battery = batterySimulator.battery, sunViewController.viewModel.watt > 0, powerPlugViewController.viewModel.watt > 0 else {
             state = .off
             return
         }
-        if sunViewController.viewModel.watt >= powerPlugViewController.viewModel.watt {
+        if sunViewController.viewModel.watt >= battery.loadingPower &&
+            sunViewController.viewModel.watt >= powerPlugViewController.viewModel.watt {
             state = .on
         } else {
             state = .off

@@ -43,6 +43,7 @@ class PowerSliderViewController: UIViewController {
         view.addSubview(slider)
         slider.pinToEdges([.left, .right], of: view, inset: 5)
         slider.centerY(of: view)
+        slider.value = Float(viewModel.watt / viewModel.maxWatt)
         slider.isContinuous = true
         slider.addTarget(self, action: #selector(updatePeak), for: .primaryActionTriggered)
     }

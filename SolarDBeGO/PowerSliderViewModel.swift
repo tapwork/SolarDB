@@ -9,28 +9,50 @@
 import UIKit
 
 struct PowerSliderViewModel {
+    enum PowerType: String {
+        case sun, outlet
+    }
     let maxWatt: Double
-    var watt: Double = 0.0
+    var watt: Double = 0.0 {
+        didSet {
+            store(watt: watt, type: type)
+        }
+    }
     let title: String
     let backgroundColor: UIColor
     let fontColor: UIColor
+    private let type: PowerType
+
+    init(type: PowerType) {
+        self.type = type
+        switch type {
+        case .sun:
+            self.backgroundColor = .yellow
+            self.maxWatt = 10.0
+            self.fontColor = .blue
+            self.title = "Sun: Simulation of power produced by solar"
+        case .outlet:
+            self.backgroundColor = .blue
+            self.maxWatt = 3.5
+            self.fontColor = .white
+            self.title = "Minimum solar power (kW) to enable charging the car"
+        }
+        self.watt = storedWatt(for: type)
+    }
 }
 
 extension PowerSliderViewModel {
-    static var sun: PowerSliderViewModel {
-        return PowerSliderViewModel(maxWatt: 10,
-                                    watt: 0,
-                                    title: "Simulation of power produced by the sun",
-                                    backgroundColor: .yellow,
-                                    fontColor: .black)
+
+    var key: String {
+        return "\(String(describing: PowerSliderViewModel.self)).Watt.\(type.rawValue)"
     }
 
-    static var outlet: PowerSliderViewModel {
-        return PowerSliderViewModel(maxWatt: 3.5,
-                                    watt: 0,
-                                    title: "Minimum power (kW) to start charging the car",
-                                    backgroundColor: .blue,
-                                    fontColor: .white)
+    func storedWatt(for type: PowerType) -> Double {
+        return UserDefaults.standard.double(forKey: key)
+    }
+
+    func store(watt: Double, type: PowerType) {
+        UserDefaults.standard.set(watt, forKey: key)
     }
 }
 
