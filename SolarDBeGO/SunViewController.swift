@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol SunViewControllerDelegate: class {
+    func sunViewController(_ sunViewController: SunViewController, didChange peak: Double)
+}
+
 class SunViewController: UIViewController {
 
     struct Constants {
@@ -18,6 +22,7 @@ class SunViewController: UIViewController {
     private lazy var slider = UISlider()
     private lazy var maxPeakLabel = UILabel()
     private lazy var currentPeakLabel = UILabel()
+    weak var delegate: SunViewControllerDelegate?
 
     // MARK: View Life
     override func viewDidLoad() {
@@ -38,6 +43,12 @@ class SunViewController: UIViewController {
     }
 
     private func setupLabels() {
+        let titleLabel = UILabel()
+        view.addSubview(titleLabel)
+        titleLabel.text = "E-Power produced by the sun"
+        titleLabel.pinTop(to: view.topAnchor, inset: 5)
+        titleLabel.centerX(of: view)
+
         maxPeakLabel.text = "\(Constants.maxPeak) kW (Peak)"
         view.addSubview(maxPeakLabel)
         maxPeakLabel.centerY(of: slider)
@@ -54,5 +65,6 @@ class SunViewController: UIViewController {
     @objc func updatePeak() {
         let value = Constants.maxPeak * Double(slider.value)
         currentPeakLabel.text = value.decimalFormatted + " kW"
+        delegate?.sunViewController(self, didChange: value)
     }
 }
