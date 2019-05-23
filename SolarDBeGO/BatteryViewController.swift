@@ -57,7 +57,7 @@ class BatteryView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: .zero)
-        backgroundColor = .darkGray
+        backgroundColor = .lightGray
         setupChargedBarView()
         setupLabels()
     }
