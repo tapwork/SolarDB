@@ -16,4 +16,21 @@ struct PowerSliderViewModel {
     let fontColor: UIColor
 }
 
+extension PowerSliderViewModel {
+    static var sun: PowerSliderViewModel {
+        return PowerSliderViewModel(maxWatt: 10,
+                             watt: 0,
+                             title: "Simulation of power produced by the sun",
+                             backgroundColor: .yellow,
+                             fontColor: .black)
+    }
+
+    static var outlet: PowerSliderViewModel {
+        return PowerSliderViewModel(maxWatt: 3.5,
+                                    watt: 0,
+                                    title: "Minimum power (kW) to start charging the car",
+                                    backgroundColor: .blue,
+                                    fontColor: .white)
+    }
+}
 

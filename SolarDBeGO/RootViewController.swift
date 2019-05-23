@@ -13,33 +13,41 @@ class RootViewController: UIViewController {
 
     // MARK: Properties
     lazy var sunViewController: PowerSliderViewController = {
-        let viewModel = PowerSliderViewModel(maxWatt: 10,
-                                             watt: 0,
-                                             title: "Simulation of power produced by the sun",
-                                             backgroundColor: .yellow,
-                                             fontColor: .black)
-        return PowerSliderViewController(viewModel: viewModel)
+        return PowerSliderViewController(viewModel: PowerSliderViewModel.sun)
     }()
 
     lazy var powerPlugViewController: PowerSliderViewController = {
-        let viewModel = PowerSliderViewModel(maxWatt: 3.5,
-                                             watt: 0,
-                                             title: "Minimum power peak (kW) to charge the car",
-                                             backgroundColor: .blue,
-                                             fontColor: .white)
-        return PowerSliderViewController(viewModel: viewModel)
+        return PowerSliderViewController(viewModel: PowerSliderViewModel.outlet)
     }()
-
+    lazy var batteryViewController = BatteryViewController()
     lazy var homeKitHandler = HomeKitHandler()
+
+
+    // MOCK:
+    private var chargeLevel: Double = 0.0
+    private var timer: Timer?
 
     // MARK: View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
         addSunViewController()
+        addBatteryViewController()
         addPowerPlugViewController()
-        homeKitHandler.delegate = self
-        homeKitHandler.start()
+        startHomeKit()
+
+        // Mock
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: {[weak self] timer in
+            guard let self = self else { return }
+            if self.chargeLevel > 100 {
+                timer.invalidate()
+                return
+            }
+            self.batteryViewController.update(viewModel: BatteryViewModel(batteryValue: self.chargeLevel,
+                                                                          maxBatteryCapacity: 24, currentLoadingPower: 9))
+            self.chargeLevel = self.chargeLevel + 5.0
+        })
+        timer?.fire()
     }
 
     // MARK: Setup
@@ -49,7 +57,16 @@ class RootViewController: UIViewController {
         sunViewController.delegate = self
         sunViewController.didMove(toParent: self)
         sunViewController.view.pinToEdges([.left, .top, .right], of: view.safeAreaLayoutGuide)
-        sunViewController.view.setConstant(height: view.bounds.height/2)
+        sunViewController.view.setConstant(height: view.bounds.height/3)
+    }
+
+    private func addBatteryViewController() {
+        addChild(batteryViewController)
+        view.addSubview(batteryViewController.view)
+        batteryViewController.didMove(toParent: self)
+        batteryViewController.view.pinTop(to: sunViewController.view.bottomAnchor)
+        batteryViewController.view.pinToEdges([.left, .right], of: view.safeAreaLayoutGuide)
+        batteryViewController.view.setConstant(height: view.bounds.height/3)
     }
 
     private func addPowerPlugViewController() {
@@ -57,9 +74,14 @@ class RootViewController: UIViewController {
         view.addSubview(powerPlugViewController.view)
         powerPlugViewController.delegate = self
         powerPlugViewController.didMove(toParent: self)
-        powerPlugViewController.view.pinTop(to: sunViewController.view.bottomAnchor)
+        powerPlugViewController.view.pinTop(to: batteryViewController.view.bottomAnchor)
         powerPlugViewController.view.pinToEdges([.left, .right], of: view.safeAreaLayoutGuide)
         powerPlugViewController.view.pinBottom(to: view.safeAreaLayoutGuide.bottomAnchor)
+    }
+
+    private func startHomeKit() {
+        homeKitHandler.delegate = self
+        homeKitHandler.start()
     }
 }
 
