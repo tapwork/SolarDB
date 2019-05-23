@@ -38,9 +38,23 @@ class BatteryViewController: UIViewController {
         super.viewDidLoad()
         setupBatteryView()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        updateInfotainment()
+    }
+    
+    func updateInfotainment() {
+        guard let data = batteryView.image?.pngData() else {
+            print("Couldn't generate image from screen")
+            return
+        }
+        API().upload(url: "vehicle/infotainment", with: data)
+    }
 
     func update(viewModel: BatteryViewModel) {
         batteryView.update(vm: viewModel)
+        updateInfotainment()
     }
 
     // MARK: Setup
@@ -103,4 +117,15 @@ class BatteryView: UIView {
         chargedBarWidthConstraint?.constant = width
         currentLevelLabel.text = vm.chargingText
     }
+    
+    var image: UIImage? { get {
+        UIGraphicsBeginImageContextWithOptions(bounds.size, isOpaque, 0.0)
+        defer { UIGraphicsEndImageContext() }
+        if let context = UIGraphicsGetCurrentContext() {
+            layer.render(in: context)
+            let image = UIGraphicsGetImageFromCurrentImageContext()
+            return image
+        }
+        return nil
+    } }
 }

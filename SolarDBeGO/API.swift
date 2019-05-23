@@ -14,20 +14,26 @@ struct VehicleSignals: Codable {
     var batteryStateOfCharge: Int
 }
 
-class API: NSObject, URLSessionDownloadDelegate {
+extension URLSessionConfiguration {
+    func configure() {
+        httpAdditionalHeaders = ["X-Api-Key":"e2502090-b764-406f-885f-c6e9f159bf1b"]
+        isDiscretionary = true
+        sessionSendsLaunchEvents = true
+    }
+}
+
+class API: NSObject, URLSessionDownloadDelegate, URLSessionTaskDelegate {
     
-    private var backgroundTask : URLSessionDownloadTask?
+    private var downloadTask : URLSessionDownloadTask?
+    private var uploadTask : URLSessionUploadTask?
     private var baseURL = "https://ego-vehicle-api.azurewebsites.net/api/v1/"
     
     var callback: ((_ signals: VehicleSignals) -> ())?
     
-    private lazy var urlSession: URLSession = {
-        let config = URLSessionConfiguration.background(withIdentifier: "MySession")
-        config.httpAdditionalHeaders = ["X-Api-Key":"e2502090-b764-406f-885f-c6e9f159bf1b"]
-        config.isDiscretionary = true
-        config.sessionSendsLaunchEvents = true
-        return URLSession(configuration: config, delegate: self, delegateQueue: nil)
-    }()
+    private func urlSession(with configuration: URLSessionConfiguration) -> URLSession {
+        configuration.configure()
+        return URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
+    }
     
     func start(url: String, callback: ((_ signals: VehicleSignals) -> ())?) {
         guard let url = URL(string: "\(baseURL)\(url)") else {
@@ -39,8 +45,22 @@ class API: NSObject, URLSessionDownloadDelegate {
             return
         }
         self.callback = callback
-        backgroundTask = urlSession.downloadTask(with: url)
-        backgroundTask?.resume()
+        let configuration = URLSessionConfiguration.background(withIdentifier: "MySession")
+        downloadTask = urlSession(with: configuration).downloadTask(with: url)
+        downloadTask?.resume()
+    }
+    
+    func upload(url: String, with data: Data) {
+        guard let url = URL(string: "\(baseURL)\(url)") else {
+            print("Couldn't find JSON!")
+            return
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue("image/png", forHTTPHeaderField: "Content-Type")
+        let configuration = URLSessionConfiguration.default
+        uploadTask = urlSession(with: configuration).uploadTask(with: request, from: data)
+        uploadTask?.resume()
     }
     
     func signals(callback: ((_ signals: VehicleSignals) -> ())?) {
@@ -48,6 +68,19 @@ class API: NSObject, URLSessionDownloadDelegate {
             callback?(signals)
         }
     }
+    
+    func urlSession(_ session: URLSession, task: URLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64) {
+        print("bytesSent: \(bytesSent) • totalBytesSent: \(totalBytesSent) • totalBytesExpectedToSend: \(totalBytesExpectedToSend)")
+    }
+    
+    private func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
+        print(response)
+    }
+    
+    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        print(error)
+    }
+    
     
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         do {
