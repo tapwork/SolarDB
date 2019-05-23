@@ -52,8 +52,10 @@ class PowerSliderViewController: UIViewController {
         let titleLabel = UILabel()
         view.addSubview(titleLabel)
         titleLabel.text = viewModel.title
+        titleLabel.textAlignment = .center
+        titleLabel.numberOfLines = 2
         titleLabel.pinTop(to: view.topAnchor, inset: 5)
-        titleLabel.centerX(of: view)
+        titleLabel.pinToEdges([.left, .right], of: view, inset: 5)
         titleLabel.textColor = viewModel.fontColor
 
         view.addSubview(wattLabel)
