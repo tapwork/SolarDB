@@ -30,3 +30,12 @@ class PowerOutlet {
 //        }
     }
 }
+
+extension HMAccessory {
+    func find(serviceType: String, characteristicType: String) -> HMCharacteristic? {
+        return services.lazy
+            .filter { $0.serviceType == serviceType }
+            .flatMap { $0.characteristics }
+            .first { $0.metadata?.format == characteristicType }
+    }
+}

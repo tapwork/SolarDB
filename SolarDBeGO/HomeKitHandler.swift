@@ -15,29 +15,28 @@ protocol HomeKitHandlerDelegate: class {
 
 class HomeKitHandler: NSObject {
     weak var delegate: HomeKitHandlerDelegate?
-    private lazy var homeManager: HMHomeManager = {
-        let home = HMHomeManager()
-        home.delegate = self
-        return home
-    }()
-    private lazy var accessoryBrowser: HMAccessoryBrowser = {
-        let browser = HMAccessoryBrowser()
-        browser.delegate = self
-        return browser
-    }()
-    var home: HMHome? {
-        return homeManager.homes.first
-    }
+    private lazy var homeManager = HMHomeManager()
+    private lazy var accessoryBrowser = HMAccessoryBrowser()
+    var home: HMHome?
     var outlets = [PowerOutlet]()
     func start() {
+        home = nil
+        homeManager.delegate = self
+    }
+
+    func startBrowsingAccessory() {
         outlets.removeAll()
+        accessoryBrowser.delegate = self
         accessoryBrowser.startSearchingForNewAccessories()
     }
 }
 
 extension HomeKitHandler: HMHomeManagerDelegate {
     func homeManagerDidUpdateHomes(_ manager: HMHomeManager) {
-       //
+        home = manager.homes.filter {$0.name == "e GO Headquarters"}.first
+        if home != nil {
+            startBrowsingAccessory()
+        }
     }
 }
 
