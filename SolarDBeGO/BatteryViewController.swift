@@ -14,6 +14,9 @@ struct BatteryViewModel {
     let currentLoadingPower: Double
 
     var title: String {
+        if batteryValue >= 100 {
+            return "Battery fully juiced ;-)"
+        }
         return "Current charging power by the sun: \(currentLoadingPower.decimalFormatted) kW"
     }
 

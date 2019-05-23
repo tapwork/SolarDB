@@ -30,7 +30,6 @@ class PowerOutlet {
     }
 
     // MARK: Init
-    var some = ""
     init(outlet: HMAccessory) {
         self.outlet = outlet
     }

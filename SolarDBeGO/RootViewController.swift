@@ -21,11 +21,7 @@ class RootViewController: UIViewController {
     }()
     lazy var batteryViewController = BatteryViewController()
     lazy var homeKitHandler = HomeKitHandler()
-
-
-    // MOCK:
-    private var chargeLevel: Double = 0.0
-    private var timer: Timer?
+    lazy var batteryLoadingSimulator = BatteryLoadingSimulator()
 
     // MARK: View Life Cycle
     override func viewDidLoad() {
@@ -34,20 +30,8 @@ class RootViewController: UIViewController {
         addSunViewController()
         addBatteryViewController()
         addPowerPlugViewController()
+        setupBatteryLoadingSimulator()
         startHomeKit()
-
-        // Mock
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: {[weak self] timer in
-            guard let self = self else { return }
-            if self.chargeLevel > 100 {
-                timer.invalidate()
-                return
-            }
-            self.batteryViewController.update(viewModel: BatteryViewModel(batteryValue: self.chargeLevel,
-                                                                          maxBatteryCapacity: 24, currentLoadingPower: 9))
-            self.chargeLevel = self.chargeLevel + 5.0
-        })
-        timer?.fire()
     }
 
     // MARK: Setup
@@ -79,9 +63,39 @@ class RootViewController: UIViewController {
         powerPlugViewController.view.pinBottom(to: view.safeAreaLayoutGuide.bottomAnchor)
     }
 
+    private func setupBatteryLoadingSimulator() {
+        batteryLoadingSimulator.updateHandler = {[weak self] chargeLevel in
+            guard let self = self else { return }
+            let loadingPower = self.powerPlugViewController.viewModel.watt
+            let maxBatteryCapacity = 24.0
+            guard chargeLevel > 0, maxBatteryCapacity > 0, loadingPower > 0 else {
+                return
+            }
+            let vm = BatteryViewModel(batteryValue: chargeLevel,
+                                      maxBatteryCapacity: maxBatteryCapacity,
+                                      currentLoadingPower: loadingPower)
+            self.batteryViewController.update(viewModel: vm)
+        }
+    }
+
     private func startHomeKit() {
         homeKitHandler.delegate = self
         homeKitHandler.start()
+    }
+
+    func toggleOutletIfNeeded() {
+        var state = homeKitHandler.outlet?.state
+        guard sunViewController.viewModel.watt > 0, powerPlugViewController.viewModel.watt > 0 else {
+            state = .off
+            return
+        }
+        if sunViewController.viewModel.watt >= powerPlugViewController.viewModel.watt {
+            state = .on
+        } else {
+            state = .off
+        }
+        homeKitHandler.outlet?.state = state
+        state == .on ? batteryLoadingSimulator.start() : batteryLoadingSimulator.pause()
     }
 }
 
@@ -90,22 +104,10 @@ extension RootViewController: PowerSliderViewControllerDelegate {
                                    didUpdate viewModel: PowerSliderViewModel) {
         toggleOutletIfNeeded()
     }
-
-    func toggleOutletIfNeeded() {
-        guard sunViewController.viewModel.watt > 0 else {
-            homeKitHandler.outlets.forEach {$0.state = .off}
-            return
-        }
-        if sunViewController.viewModel.watt >= powerPlugViewController.viewModel.watt {
-            homeKitHandler.outlets.forEach {$0.state = .on}
-        } else {
-            homeKitHandler.outlets.forEach {$0.state = .off}
-        }
-    }
 }
 
 extension RootViewController: HomeKitHandlerDelegate {
-    func homeKitHandlerDidUpdate(_ homeKitHandler: HomeKitHandler, outlets: [PowerOutlet]) {
+     func homeKitHandlerDidUpdate(_ homeKitHandler: HomeKitHandler, outlet: PowerOutlet) {
         toggleOutletIfNeeded()
     }
 }
