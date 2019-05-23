@@ -19,10 +19,10 @@ struct PowerSliderViewModel {
 extension PowerSliderViewModel {
     static var sun: PowerSliderViewModel {
         return PowerSliderViewModel(maxWatt: 10,
-                             watt: 0,
-                             title: "Simulation of power produced by the sun",
-                             backgroundColor: .yellow,
-                             fontColor: .black)
+                                    watt: 0,
+                                    title: "Simulation of power produced by the sun",
+                                    backgroundColor: .yellow,
+                                    fontColor: .black)
     }
 
     static var outlet: PowerSliderViewModel {

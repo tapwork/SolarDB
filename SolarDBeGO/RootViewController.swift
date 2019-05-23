@@ -9,6 +9,29 @@
 import UIKit
 import HomeKit
 
+class LoadingViewController: UIViewController {
+
+    private lazy var activityIndicator = UIActivityIndicatorView(style: .gray)
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        view.backgroundColor = UIColor(white: 1.0, alpha: 0.8)
+        view.addSubview(activityIndicator)
+        activityIndicator.center(of: view)
+        activityIndicator.hidesWhenStopped = true
+    }
+
+    func stop() {
+        view.isHidden = true
+        activityIndicator.stopAnimating()
+    }
+
+    func start() {
+        view.isHidden = false
+        activityIndicator.startAnimating()
+    }
+}
+
 class RootViewController: UIViewController {
 
     // MARK: Properties
@@ -19,9 +42,10 @@ class RootViewController: UIViewController {
     lazy var powerPlugViewController: PowerSliderViewController = {
         return PowerSliderViewController(viewModel: PowerSliderViewModel.outlet)
     }()
+    lazy var loadingViewController = LoadingViewController()
     lazy var batteryViewController = BatteryViewController()
     lazy var homeKitHandler = HomeKitHandler()
-    lazy var batteryLoadingSimulator = BatteryLoadingSimulator()
+    lazy var batterySimulator = BatterySimulator()
 
     // MARK: View Life Cycle
     override func viewDidLoad() {
@@ -30,7 +54,8 @@ class RootViewController: UIViewController {
         addSunViewController()
         addBatteryViewController()
         addPowerPlugViewController()
-        setupBatteryLoadingSimulator()
+        addBatteryLoadingSimulator()
+        addLoadingViewController()
         startHomeKit()
     }
 
@@ -63,19 +88,23 @@ class RootViewController: UIViewController {
         powerPlugViewController.view.pinBottom(to: view.safeAreaLayoutGuide.bottomAnchor)
     }
 
-    private func setupBatteryLoadingSimulator() {
-        batteryLoadingSimulator.updateHandler = {[weak self] chargeLevel in
+    private func addBatteryLoadingSimulator() {
+        batterySimulator.canStartCharging = {[weak self] battery in
             guard let self = self else { return }
-            let loadingPower = self.powerPlugViewController.viewModel.watt
-            let maxBatteryCapacity = 24.0
-            guard chargeLevel > 0, maxBatteryCapacity > 0, loadingPower > 0 else {
-                return
-            }
-            let vm = BatteryViewModel(batteryValue: chargeLevel,
-                                      maxBatteryCapacity: maxBatteryCapacity,
-                                      currentLoadingPower: loadingPower)
-            self.batteryViewController.update(viewModel: vm)
+            self.loadingViewController.stop()
+            self.batteryViewController.update(viewModel: BatteryViewModel(battery))
         }
+        batterySimulator.updateHandler = {[weak self] battery in
+            guard let self = self else { return }
+            self.batteryViewController.update(viewModel: BatteryViewModel(battery))
+        }
+    }
+
+    private func addLoadingViewController() {
+        addChild(loadingViewController)
+        view.addSubview(loadingViewController.view)
+        loadingViewController.didMove(toParent: self)
+        loadingViewController.start()
     }
 
     private func startHomeKit() {
@@ -95,7 +124,7 @@ class RootViewController: UIViewController {
             state = .off
         }
         homeKitHandler.outlet?.state = state
-        state == .on ? batteryLoadingSimulator.start() : batteryLoadingSimulator.pause()
+        state == .on ? batterySimulator.juice() : batterySimulator.pause()
     }
 }
 

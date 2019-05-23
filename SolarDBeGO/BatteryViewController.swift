@@ -9,15 +9,26 @@
 import UIKit
 
 struct BatteryViewModel {
+    let isCharging: Bool
     let batteryValue: Double
     let maxBatteryCapacity: Double
     let currentLoadingPower: Double
+
+    init(_ battery: Battery) {
+        self.batteryValue = battery.chargeLevel
+        self.maxBatteryCapacity = battery.capacity
+        self.currentLoadingPower = battery.loadingPower
+        self.isCharging = battery.isCharging
+    }
 
     var title: String {
         if batteryValue >= 100 {
             return "Battery fully juiced ;-)"
         }
-        return "Current charging power by the sun: \(currentLoadingPower.decimalFormatted) kW"
+        if isCharging {
+            return "Current charging power: \(currentLoadingPower.decimalFormatted) kW"
+        }
+        return "Battery not charging"
     }
 
     var maxCapacityText: String {

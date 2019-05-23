@@ -15,7 +15,6 @@ protocol PowerSliderViewControllerDelegate: class {
 
 class PowerSliderViewController: UIViewController {
 
-
     // MARK: Properties
     private lazy var slider = UISlider()
     private lazy var wattLabel = UILabel()

@@ -9,9 +9,9 @@
 import Foundation
 
 struct VehicleSignals: Codable {
-    var batteryLoadingCapacity: Double
-    var batteryTotalKwhCapacity: Double
-    var batteryStateOfCharge: Int
+    var batteryLoadingCapacity: Double // i.e. 3.6 kW (one phase 16 A)
+    var batteryTotalKwhCapacity: Double // i.e. 24 kWh (Battery size)
+    var batteryStateOfCharge: Int // Latest battery level in percent
 }
 
 extension URLSessionConfiguration {
