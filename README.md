@@ -24,12 +24,17 @@
 
 
 ## Idea
-* Cheap smart plug that use solar energy only (smart controlled by an iOS app) 
-* Use the data coming from the solar inverter to control the charge your EV
+* Cheap smart plug that uses solar energy only (controlled by an iOS app) 
+* Smart plug uses the data coming from the solar inverter to charge your EV.
 * Automatic charging the EV with the solar panels when reaching a defined kW/h peak.
 * That allows the owner to charge by green energy only!
 * Show the current solar production in the car. 
 
+## Technology
+* iOS
+* Apple HomeKit
+* Eve Elgato Smart Plug
+* EV charger for your car 16A - 220 V 
 
 
 ## Competitors 
