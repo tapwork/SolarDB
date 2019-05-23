@@ -131,11 +131,8 @@
 				72DAA15E2296BAB700FBF335 /* PowerSliderViewController.swift */,
 				72DAA1602296BAF700FBF335 /* PowerSliderViewModel.swift */,
 				72DAA1622296D5BF00FBF335 /* PowerOutlet.swift */,
-<<<<<<< HEAD
 				4C0E71FC2296FCED00E87085 /* API.swift */,
-=======
 				72DAA1762296FCE500FBF335 /* BatteryViewController.swift */,
->>>>>>> c86be78d993182886c86c6dfdc5534943a471f06
 			);
 			path = SolarDBeGO;
 			sourceTree = "<group>";
