@@ -13,8 +13,8 @@ class RootViewController: UIViewController {
 
     // MARK: Properties
     lazy var sunViewController: PowerSliderViewController = {
-        let viewModel = PowerSliderViewModel(maxPeak: 10,
-                                             currentPeak: 0,
+        let viewModel = PowerSliderViewModel(maxWatt: 10,
+                                             watt: 0,
                                              title: "Simulation of power produced by the sun",
                                              backgroundColor: .yellow,
                                              fontColor: .black)
@@ -22,8 +22,8 @@ class RootViewController: UIViewController {
     }()
 
     lazy var powerPlugViewController: PowerSliderViewController = {
-        let viewModel = PowerSliderViewModel(maxPeak: 3.5,
-                                             currentPeak: 0,
+        let viewModel = PowerSliderViewModel(maxWatt: 3.5,
+                                             watt: 0,
                                              title: "Minimum power peak (kW) to charge the car",
                                              backgroundColor: .blue,
                                              fontColor: .white)
@@ -66,18 +66,20 @@ class RootViewController: UIViewController {
 extension RootViewController: PowerSliderViewControllerDelegate {
     func powerSliderViewController(_ powerSliderViewController: PowerSliderViewController,
                                    didUpdate viewModel: PowerSliderViewModel) {
-        if powerSliderViewController === powerPlugViewController {
-            // Start or stop
+        triggerOutletIfNeeded()
+    }
+
+    func triggerOutletIfNeeded() {
+        if sunViewController.viewModel.watt >= powerPlugViewController.viewModel.watt {
+            // turn on
+        } else {
+            // turn off
         }
     }
 }
 
 extension RootViewController: HomeKitHandlerDelegate {
-    func homeKitHandlerDidUpdate(_ homeKitHandler: HomeKitHandler, homes: [HMHome]) {
-
-    }
-
-    func homeKitHandlerDidUpdate(_ homeKitHandler: HomeKitHandler, accessories: [HMAccessory]) {
+    func homeKitHandlerDidUpdate(_ homeKitHandler: HomeKitHandler, outlets: [PowerOutlet]) {
 
     }
 }

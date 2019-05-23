@@ -18,10 +18,9 @@ class PowerSliderViewController: UIViewController {
 
     // MARK: Properties
     private lazy var slider = UISlider()
-    private lazy var maxPeakLabel = UILabel()
-    private lazy var currentPeakLabel = UILabel()
+    private lazy var wattLabel = UILabel()
     weak var delegate: PowerSliderViewControllerDelegate?
-    private var viewModel: PowerSliderViewModel
+    var viewModel: PowerSliderViewModel
 
     // MARK: Init
     init(viewModel: PowerSliderViewModel) {
@@ -57,25 +56,18 @@ class PowerSliderViewController: UIViewController {
         titleLabel.centerX(of: view)
         titleLabel.textColor = viewModel.fontColor
 
-//        maxPeakLabel.text = "\(viewModel.maxPeak) kW (Peak)"
-//        view.addSubview(maxPeakLabel)
-//        maxPeakLabel.centerY(of: slider)
-//        maxPeakLabel.pinLeading(to: slider.trailingAnchor, inset: 5)
-//        maxPeakLabel.pinTrailing(to: view.trailingAnchor, inset: 5)
-//        maxPeakLabel.textColor = viewModel.fontColor
-
-        view.addSubview(currentPeakLabel)
-        currentPeakLabel.pinTop(to: slider.bottomAnchor, inset: 15)
-        currentPeakLabel.centerX(of: slider)
-        currentPeakLabel.textColor = viewModel.fontColor
+        view.addSubview(wattLabel)
+        wattLabel.pinTop(to: slider.bottomAnchor, inset: 15)
+        wattLabel.centerX(of: slider)
+        wattLabel.textColor = viewModel.fontColor
         updatePeak()
     }
 
     // MARK: Actions
     @objc func updatePeak() {
-        let value = viewModel.maxPeak * Double(slider.value)
-        currentPeakLabel.text = value.decimalFormatted
-        viewModel.currentPeak = value
+        let value = viewModel.maxWatt * Double(slider.value)
+        wattLabel.text = value.decimalFormatted
+        viewModel.watt = value
         delegate?.powerSliderViewController(self, didUpdate: viewModel)
     }
 }

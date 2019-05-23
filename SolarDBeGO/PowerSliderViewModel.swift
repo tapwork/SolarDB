@@ -9,8 +9,8 @@
 import UIKit
 
 struct PowerSliderViewModel {
-    let maxPeak: Double
-    var currentPeak: Double = 0.0
+    let maxWatt: Double
+    var watt: Double = 0.0
     let title: String
     let backgroundColor: UIColor
     let fontColor: UIColor

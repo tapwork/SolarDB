@@ -10,8 +10,7 @@ import Foundation
 import HomeKit
 
 protocol HomeKitHandlerDelegate: class {
-    func homeKitHandlerDidUpdate(_ homeKitHandler: HomeKitHandler, homes: [HMHome])
-    func homeKitHandlerDidUpdate(_ homeKitHandler: HomeKitHandler, accessories: [HMAccessory])
+    func homeKitHandlerDidUpdate(_ homeKitHandler: HomeKitHandler, outlets: [PowerOutlet])
 }
 
 class HomeKitHandler: NSObject {
@@ -29,25 +28,24 @@ class HomeKitHandler: NSObject {
     var home: HMHome? {
         return homeManager.homes.first
     }
-    var accessories = [HMAccessory]()
-    var outlets: [HMAccessory]? {
-        return accessories.filter {$0.category.categoryType == "Outlet"}
-    }
-
+    var outlets = [PowerOutlet]()
     func start() {
+        outlets.removeAll()
         accessoryBrowser.startSearchingForNewAccessories()
     }
 }
 
 extension HomeKitHandler: HMHomeManagerDelegate {
     func homeManagerDidUpdateHomes(_ manager: HMHomeManager) {
-        delegate?.homeKitHandlerDidUpdate(self, homes: manager.homes)
+       //
     }
 }
 
 extension HomeKitHandler: HMAccessoryBrowserDelegate {
     func accessoryBrowser(_ browser: HMAccessoryBrowser, didFindNewAccessory accessory: HMAccessory) {
-        accessories.append(accessory)
-        delegate?.homeKitHandlerDidUpdate(self, accessories: accessories)
+        if accessory.category.categoryType == HMServiceTypeOutlet {
+            outlets.append(PowerOutlet(outlet: accessory))
+        }
+        delegate?.homeKitHandlerDidUpdate(self, outlets: outlets)
     }
 }

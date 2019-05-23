@@ -20,6 +20,7 @@
 		72DAA15A2296B8FB00FBF335 /* HomeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72DAA1592296B8FB00FBF335 /* HomeKit.framework */; };
 		72DAA15F2296BAB700FBF335 /* PowerSliderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DAA15E2296BAB700FBF335 /* PowerSliderViewController.swift */; };
 		72DAA1612296BAF700FBF335 /* PowerSliderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DAA1602296BAF700FBF335 /* PowerSliderViewModel.swift */; };
+		72DAA1632296D5BF00FBF335 /* PowerOutlet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DAA1622296D5BF00FBF335 /* PowerOutlet.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +61,7 @@
 		72DAA15B2296B8FB00FBF335 /* SolarDBeGO.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SolarDBeGO.entitlements; sourceTree = "<group>"; };
 		72DAA15E2296BAB700FBF335 /* PowerSliderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerSliderViewController.swift; sourceTree = "<group>"; };
 		72DAA1602296BAF700FBF335 /* PowerSliderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerSliderViewModel.swift; sourceTree = "<group>"; };
+		72DAA1622296D5BF00FBF335 /* PowerOutlet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerOutlet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +126,7 @@
 				72DAA1562296B8E700FBF335 /* HomeKitHandler.swift */,
 				72DAA15E2296BAB700FBF335 /* PowerSliderViewController.swift */,
 				72DAA1602296BAF700FBF335 /* PowerSliderViewModel.swift */,
+				72DAA1622296D5BF00FBF335 /* PowerOutlet.swift */,
 			);
 			path = SolarDBeGO;
 			sourceTree = "<group>";
@@ -296,6 +299,7 @@
 				72DAA1552296B52900FBF335 /* String+Watt.swift in Sources */,
 				72DAA1532296AAFB00FBF335 /* UIView+Autolayout.swift in Sources */,
 				72BA13E32296A5CC00DD005B /* AppDelegate.swift in Sources */,
+				72DAA1632296D5BF00FBF335 /* PowerOutlet.swift in Sources */,
 				72DAA1612296BAF700FBF335 /* PowerSliderViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -472,15 +476,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = SolarDBeGO/SolarDBeGO.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = D5PCJAP39R;
 				INFOPLIST_FILE = SolarDBeGO/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = SolarDB.SolarDBeGO;
+				PRODUCT_BUNDLE_IDENTIFIER = de.tapwork.solardashboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "SolarDB Development";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -491,15 +497,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = SolarDBeGO/SolarDBeGO.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = D5PCJAP39R;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = SolarDBeGO/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = SolarDB.SolarDBeGO;
+				PRODUCT_BUNDLE_IDENTIFIER = de.tapwork.solardashboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
