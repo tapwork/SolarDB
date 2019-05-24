@@ -8,17 +8,18 @@
 
 import UIKit
 
-protocol PowerSliderViewControllerDelegate: class {
-    func powerSliderViewController(_ powerSliderViewController: PowerSliderViewController,
-                                   didUpdate viewModel: PowerSliderViewModel)
+struct PowerSliderViewModel {
+    let title: String
+    let backgroundColor: UIColor
+    let fontColor: UIColor
+    let powerHandler: PowerHandler
 }
 
 class PowerSliderViewController: UIViewController {
 
     // MARK: Properties
-    private lazy var slider = UISlider()
-    private lazy var wattLabel = UILabel()
-    weak var delegate: PowerSliderViewControllerDelegate?
+    private (set) lazy var slider = UISlider()
+    private (set) lazy var wattLabel = UILabel()
     var viewModel: PowerSliderViewModel
 
     // MARK: Init
@@ -36,6 +37,9 @@ class PowerSliderViewController: UIViewController {
         view.backgroundColor = viewModel.backgroundColor
         setupSlider()
         setupLabels()
+        viewModel.powerHandler.observe {
+            self.update()
+        }
     }
 
     // MARK: Setup
@@ -43,9 +47,9 @@ class PowerSliderViewController: UIViewController {
         view.addSubview(slider)
         slider.pinToEdges([.left, .right], of: view, inset: 5)
         slider.centerY(of: view)
-        slider.value = Float(viewModel.watt / viewModel.maxWatt)
         slider.isContinuous = true
-        slider.addTarget(self, action: #selector(updatePeak), for: .primaryActionTriggered)
+        slider.value = Float(viewModel.powerHandler.watt / viewModel.powerHandler.maxWatt)
+        slider.addTarget(self, action: #selector(update), for: .primaryActionTriggered)
     }
 
     private func setupLabels() {
@@ -62,14 +66,39 @@ class PowerSliderViewController: UIViewController {
         wattLabel.pinTop(to: slider.bottomAnchor, inset: 15)
         wattLabel.centerX(of: slider)
         wattLabel.textColor = viewModel.fontColor
-        updatePeak()
+        update()
     }
 
     // MARK: Actions
-    @objc func updatePeak() {
-        let value = viewModel.maxWatt * Double(slider.value)
+    @objc func update() {
+        let value = viewModel.powerHandler.maxWatt * Double(slider.value)
         wattLabel.text = value.decimalFormatted
-        viewModel.watt = value
-        delegate?.powerSliderViewController(self, didUpdate: viewModel)
+        viewModel.powerHandler.watt = value
     }
 }
+
+class ChargeSettingsViewController: PowerSliderViewController {
+    required init() {
+        let vm = PowerSliderViewModel(title: "Minimum solar power (kW) to enable charging the car",
+                                      backgroundColor: .blue,
+                                      fontColor: .white,
+                                      powerHandler: ChargeSettingsHandler.shared)
+        super.init(viewModel: vm)
+    }
+
+    required init?(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
+}
+
+class SolarPowerSliderViewController: PowerSliderViewController {
+
+    required init() {
+        let vm = PowerSliderViewModel(title: "Sun: Simulation of power produced by solar",
+                                      backgroundColor: .yellow,
+                                      fontColor: .black,
+                                      powerHandler: SolarSimulator.shared)
+        super.init(viewModel: vm)
+    }
+
+    required init?(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
+}
+

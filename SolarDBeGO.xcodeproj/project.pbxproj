@@ -20,10 +20,12 @@
 		72DAA1552296B52900FBF335 /* String+Watt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DAA1542296B52900FBF335 /* String+Watt.swift */; };
 		72DAA1572296B8E700FBF335 /* HomeKitHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DAA1562296B8E700FBF335 /* HomeKitHandler.swift */; };
 		72DAA15F2296BAB700FBF335 /* PowerSliderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DAA15E2296BAB700FBF335 /* PowerSliderViewController.swift */; };
-		72DAA1612296BAF700FBF335 /* PowerSliderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DAA1602296BAF700FBF335 /* PowerSliderViewModel.swift */; };
 		72DAA1632296D5BF00FBF335 /* PowerOutlet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DAA1622296D5BF00FBF335 /* PowerOutlet.swift */; };
 		72DAA1752296EB8E00FBF335 /* HomeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72DAA1742296EB8D00FBF335 /* HomeKit.framework */; };
 		72DAA1772296FCE500FBF335 /* BatteryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72DAA1762296FCE500FBF335 /* BatteryViewController.swift */; };
+		72FA8D192297D4C80037AAA2 /* SolarSimulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FA8D182297D4C80037AAA2 /* SolarSimulator.swift */; };
+		72FA8D212297E4120037AAA2 /* ChargeSettingsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FA8D202297E4120037AAA2 /* ChargeSettingsHandler.swift */; };
+		72FA8D232297E5020037AAA2 /* PowerHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FA8D222297E5020037AAA2 /* PowerHandler.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,10 +66,12 @@
 		72DAA1562296B8E700FBF335 /* HomeKitHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeKitHandler.swift; sourceTree = "<group>"; };
 		72DAA15B2296B8FB00FBF335 /* SolarDBeGO.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SolarDBeGO.entitlements; sourceTree = "<group>"; };
 		72DAA15E2296BAB700FBF335 /* PowerSliderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerSliderViewController.swift; sourceTree = "<group>"; };
-		72DAA1602296BAF700FBF335 /* PowerSliderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerSliderViewModel.swift; sourceTree = "<group>"; };
 		72DAA1622296D5BF00FBF335 /* PowerOutlet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerOutlet.swift; sourceTree = "<group>"; };
 		72DAA1742296EB8D00FBF335 /* HomeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HomeKit.framework; path = System/Library/Frameworks/HomeKit.framework; sourceTree = SDKROOT; };
 		72DAA1762296FCE500FBF335 /* BatteryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatteryViewController.swift; sourceTree = "<group>"; };
+		72FA8D182297D4C80037AAA2 /* SolarSimulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolarSimulator.swift; sourceTree = "<group>"; };
+		72FA8D202297E4120037AAA2 /* ChargeSettingsHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChargeSettingsHandler.swift; sourceTree = "<group>"; };
+		72FA8D222297E5020037AAA2 /* PowerHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerHandler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,11 +135,13 @@
 				72DAA1542296B52900FBF335 /* String+Watt.swift */,
 				72DAA1562296B8E700FBF335 /* HomeKitHandler.swift */,
 				72DAA15E2296BAB700FBF335 /* PowerSliderViewController.swift */,
-				72DAA1602296BAF700FBF335 /* PowerSliderViewModel.swift */,
 				72DAA1622296D5BF00FBF335 /* PowerOutlet.swift */,
 				4C0E71FC2296FCED00E87085 /* API.swift */,
 				72DAA1762296FCE500FBF335 /* BatteryViewController.swift */,
 				7239C20B22971FEE00F836FE /* BatterySimulator.swift */,
+				72FA8D182297D4C80037AAA2 /* SolarSimulator.swift */,
+				72FA8D202297E4120037AAA2 /* ChargeSettingsHandler.swift */,
+				72FA8D222297E5020037AAA2 /* PowerHandler.swift */,
 			);
 			path = SolarDBeGO;
 			sourceTree = "<group>";
@@ -305,6 +311,8 @@
 				72DAA1572296B8E700FBF335 /* HomeKitHandler.swift in Sources */,
 				72DAA15F2296BAB700FBF335 /* PowerSliderViewController.swift in Sources */,
 				72BA13E52296A5CC00DD005B /* RootViewController.swift in Sources */,
+				72FA8D212297E4120037AAA2 /* ChargeSettingsHandler.swift in Sources */,
+				72FA8D192297D4C80037AAA2 /* SolarSimulator.swift in Sources */,
 				72DAA1772296FCE500FBF335 /* BatteryViewController.swift in Sources */,
 				7239C20C22971FEE00F836FE /* BatterySimulator.swift in Sources */,
 				72DAA1552296B52900FBF335 /* String+Watt.swift in Sources */,
@@ -312,7 +320,7 @@
 				72BA13E32296A5CC00DD005B /* AppDelegate.swift in Sources */,
 				72DAA1632296D5BF00FBF335 /* PowerOutlet.swift in Sources */,
 				4C0E71FD2296FCED00E87085 /* API.swift in Sources */,
-				72DAA1612296BAF700FBF335 /* PowerSliderViewModel.swift in Sources */,
+				72FA8D232297E5020037AAA2 /* PowerHandler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

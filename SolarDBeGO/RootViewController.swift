@@ -35,13 +35,8 @@ class LoadingViewController: UIViewController {
 class RootViewController: UIViewController {
 
     // MARK: Properties
-    lazy var sunViewController: PowerSliderViewController = {
-        return PowerSliderViewController(viewModel: PowerSliderViewModel(type: .sun))
-    }()
-
-    lazy var powerPlugViewController: PowerSliderViewController = {
-        return PowerSliderViewController(viewModel: PowerSliderViewModel(type: .outlet))
-    }()
+    lazy var sunViewController = SolarPowerSliderViewController()
+    lazy var chargeSettingsViewController = ChargeSettingsViewController()
     lazy var loadingViewController = LoadingViewController()
     lazy var batteryViewController = BatteryViewController()
     lazy var homeKitHandler = HomeKitHandler()
@@ -53,9 +48,10 @@ class RootViewController: UIViewController {
 
         addSunViewController()
         addBatteryViewController()
-        addPowerPlugViewController()
+        addBatterySettingsViewController()
         addBatteryLoadingSimulator()
         addLoadingViewController()
+        addObserver()
         startHomeKit()
     }
 
@@ -63,7 +59,6 @@ class RootViewController: UIViewController {
     private func addSunViewController() {
         addChild(sunViewController)
         view.addSubview(sunViewController.view)
-        sunViewController.delegate = self
         sunViewController.didMove(toParent: self)
         sunViewController.view.pinToEdges([.left, .top, .right], of: view.safeAreaLayoutGuide)
         sunViewController.view.setConstant(height: view.bounds.height/3)
@@ -78,14 +73,13 @@ class RootViewController: UIViewController {
         batteryViewController.view.setConstant(height: view.bounds.height/3)
     }
 
-    private func addPowerPlugViewController() {
-        addChild(powerPlugViewController)
-        view.addSubview(powerPlugViewController.view)
-        powerPlugViewController.delegate = self
-        powerPlugViewController.didMove(toParent: self)
-        powerPlugViewController.view.pinTop(to: batteryViewController.view.bottomAnchor)
-        powerPlugViewController.view.pinToEdges([.left, .right], of: view.safeAreaLayoutGuide)
-        powerPlugViewController.view.pinBottom(to: view.safeAreaLayoutGuide.bottomAnchor)
+    private func addBatterySettingsViewController() {
+        addChild(chargeSettingsViewController)
+        view.addSubview(chargeSettingsViewController.view)
+        chargeSettingsViewController.didMove(toParent: self)
+        chargeSettingsViewController.view.pinTop(to: batteryViewController.view.bottomAnchor)
+        chargeSettingsViewController.view.pinToEdges([.left, .right], of: view.safeAreaLayoutGuide)
+        chargeSettingsViewController.view.pinBottom(to: view.safeAreaLayoutGuide.bottomAnchor)
     }
 
     private func addBatteryLoadingSimulator() {
@@ -107,6 +101,15 @@ class RootViewController: UIViewController {
         loadingViewController.start()
     }
 
+    private func addObserver() {
+        SolarSimulator.shared.observe {
+            self.toggleOutletIfNeeded()
+        }
+        ChargeSettingsHandler.shared.observe {
+            self.toggleOutletIfNeeded()
+        }
+    }
+
     private func startHomeKit() {
         homeKitHandler.delegate = self
         homeKitHandler.start()
@@ -114,25 +117,18 @@ class RootViewController: UIViewController {
 
     func toggleOutletIfNeeded() {
         var state = homeKitHandler.outlet?.state
-        guard let battery = batterySimulator.battery, sunViewController.viewModel.watt > 0, powerPlugViewController.viewModel.watt > 0 else {
+        guard let battery = batterySimulator.battery, SolarSimulator.shared.watt > 0, ChargeSettingsHandler.shared.watt > 0 else {
             state = .off
             return
         }
-        if sunViewController.viewModel.watt >= battery.loadingPower &&
-            sunViewController.viewModel.watt >= powerPlugViewController.viewModel.watt {
+        if SolarSimulator.shared.watt >= battery.loadingPower &&
+            SolarSimulator.shared.watt >= ChargeSettingsHandler.shared.watt {
             state = .on
         } else {
             state = .off
         }
         homeKitHandler.outlet?.state = state
         state == .on ? batterySimulator.juice() : batterySimulator.pause()
-    }
-}
-
-extension RootViewController: PowerSliderViewControllerDelegate {
-    func powerSliderViewController(_ powerSliderViewController: PowerSliderViewController,
-                                   didUpdate viewModel: PowerSliderViewModel) {
-        toggleOutletIfNeeded()
     }
 }
 
