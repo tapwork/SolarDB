@@ -13,7 +13,7 @@ class SettingsViewController: UIViewController {
     // MARK: Properties
     lazy var chargeSettingsViewController: PowerSliderViewController = {
         let vm = PowerSliderViewModel(title: "Minimum solar power (kW) to enable charging the car",
-                             backgroundColor: .white,
+                             backgroundColor: .green,
                              fontColor: .black,
                              powerHandler: ChargeSettingsHandler.shared)
         return PowerSliderViewController(viewModel: vm)
@@ -32,8 +32,7 @@ class SettingsViewController: UIViewController {
         addChild(chargeSettingsViewController)
         view.addSubview(chargeSettingsViewController.view)
         chargeSettingsViewController.didMove(toParent: self)
-        chargeSettingsViewController.view.pinTop(to: view.topAnchor)
         chargeSettingsViewController.view.pinToEdges([.left, .right], of: view.safeAreaLayoutGuide)
-        chargeSettingsViewController.view.pinBottom(to: view.safeAreaLayoutGuide.bottomAnchor)
+        chargeSettingsViewController.view.centerY(of: view)
     }
 }

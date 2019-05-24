@@ -19,6 +19,7 @@ class PowerSliderViewController: UIViewController {
 
     // MARK: Properties
     private (set) lazy var slider = UISlider()
+    private (set) lazy var titleLabel = UILabel()
     private (set) lazy var wattLabel = UILabel()
     var viewModel: PowerSliderViewModel
 
@@ -35,36 +36,40 @@ class PowerSliderViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = viewModel.backgroundColor
+        view.layoutMargins = UIEdgeInsets(top: 10, left: 5, bottom: 10, right: 5)
+        setupTitleLabel()
         setupSlider()
-        setupLabels()
+        setupWattLabel()
         viewModel.powerHandler.observe {
             self.update()
         }
     }
 
     // MARK: Setup
+    private func setupTitleLabel() {
+        view.addSubview(titleLabel)
+        titleLabel.text = viewModel.title
+        titleLabel.textAlignment = .center
+        titleLabel.numberOfLines = 2
+        titleLabel.pinTop(to: view.layoutMarginsGuide.topAnchor)
+        titleLabel.pinToEdges([.left, .right], of: view, inset: 20)
+        titleLabel.textColor = viewModel.fontColor
+    }
+
     private func setupSlider() {
         view.addSubview(slider)
-        slider.pinToEdges([.left, .right], of: view, inset: 5)
-        slider.centerY(of: view)
+        slider.pinToEdges([.left, .right], of: view.layoutMarginsGuide, inset: 15)
+        slider.pinTop(to: titleLabel.bottomAnchor, inset: 10)
         slider.isContinuous = true
         slider.value = Float(viewModel.powerHandler.watt / viewModel.powerHandler.maxWatt)
         slider.addTarget(self, action: #selector(update), for: .primaryActionTriggered)
     }
 
-    private func setupLabels() {
-        let titleLabel = UILabel()
-        view.addSubview(titleLabel)
-        titleLabel.text = viewModel.title
-        titleLabel.textAlignment = .center
-        titleLabel.numberOfLines = 2
-        titleLabel.pinTop(to: view.topAnchor, inset: 5)
-        titleLabel.pinToEdges([.left, .right], of: view, inset: 5)
-        titleLabel.textColor = viewModel.fontColor
-
+    private func setupWattLabel() {
         view.addSubview(wattLabel)
         wattLabel.pinTop(to: slider.bottomAnchor, inset: 15)
         wattLabel.centerX(of: slider)
+        wattLabel.pinBottom(to: view.layoutMarginsGuide.bottomAnchor)
         wattLabel.textColor = viewModel.fontColor
         update()
     }
@@ -72,7 +77,7 @@ class PowerSliderViewController: UIViewController {
     // MARK: Actions
     @objc func update() {
         let value = viewModel.powerHandler.maxWatt * Double(slider.value)
-        wattLabel.text = value.decimalFormatted
+        wattLabel.text = value.decimalFormatted + " kW"
         viewModel.powerHandler.watt = value
     }
 }
