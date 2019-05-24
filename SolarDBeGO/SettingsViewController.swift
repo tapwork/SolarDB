@@ -25,6 +25,7 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         addBatterySettingsViewController()
+        addResetBatteryButton()
     }
 
     // MARK: Setup
@@ -34,5 +35,9 @@ class SettingsViewController: UIViewController {
         chargeSettingsViewController.didMove(toParent: self)
         chargeSettingsViewController.view.pinToEdges([.left, .right], of: view.safeAreaLayoutGuide)
         chargeSettingsViewController.view.centerY(of: view)
+    }
+
+    private func addResetBatteryButton() {
+        
     }
 }

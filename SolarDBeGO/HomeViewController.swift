@@ -13,7 +13,7 @@ class HomeViewController: UIViewController {
 
     // MARK: Properties
     lazy var sunViewController: PowerSliderViewController = {
-        let vm = PowerSliderViewModel(title: "Sun: Simulation of power produced by solar",
+        let vm = PowerSliderViewModel(title: "Sun Simulation: kW Power produced by solar",
                                       backgroundColor: .yellow,
                                       fontColor: .black,
                                       powerHandler: SolarSimulator.shared)
@@ -40,14 +40,13 @@ class HomeViewController: UIViewController {
         view.addSubview(sunViewController.view)
         sunViewController.didMove(toParent: self)
         sunViewController.view.pinToEdges([.left, .top, .right], of: view.safeAreaLayoutGuide)
-        sunViewController.view.setConstant(height: view.bounds.height/3)
     }
 
     private func addBatteryViewController() {
         addChild(batteryViewController)
         view.addSubview(batteryViewController.view)
         batteryViewController.didMove(toParent: self)
-        batteryViewController.view.pinTop(to: sunViewController.view.bottomAnchor)
+        batteryViewController.view.centerY(of: view)
         batteryViewController.view.pinToEdges([.left, .right], of: view.safeAreaLayoutGuide)
         batteryViewController.view.setConstant(height: view.bounds.height/3)
     }
