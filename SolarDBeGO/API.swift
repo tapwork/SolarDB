@@ -102,7 +102,7 @@ class API: NSObject, URLSessionDownloadDelegate, URLSessionTaskDelegate {
         }
     }
     
-    func updateInfotainement(with data: Data) {
+    func updateInfotainment(with data: Data) {
         upload(url: "vehicle/infotainment", with: data)
     }
     
