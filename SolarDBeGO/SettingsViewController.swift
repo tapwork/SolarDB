@@ -45,7 +45,7 @@ class SettingsViewController: UIViewController {
         batteryResetButton.pinTop(to: chargeSettingsViewController.view.bottomAnchor, inset: 20)
         batteryResetButton.centerX(of: view)
         batteryResetButton.setConstant(size: CGSize(width: 150, height: 50))
-        batteryResetButton.setTitleColor(.red, for: .highlighted)
+        batteryResetButton.setTitleColor(.gray, for: .highlighted)
         batteryResetButton.backgroundColor = .red
         batteryResetButton.setTitle("Reset battery", for: .normal)
     }
