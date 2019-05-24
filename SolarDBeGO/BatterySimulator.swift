@@ -36,7 +36,7 @@ class BatterySimulator {
     }
 
     init() {
-        api.signals {[weak self] signals in
+        API.shared.updateSignals {[weak self] signals in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 let level = signals.batteryStateOfCharge
