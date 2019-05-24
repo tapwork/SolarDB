@@ -23,6 +23,7 @@ struct Battery {
 }
 
 class BatterySimulator {
+    static let shared = BatterySimulator()
     private (set) var battery: Battery?
     private var timer: Timer?
     lazy var homeKitHandler = HomeKitHandler()
@@ -65,6 +66,13 @@ class BatterySimulator {
         timer?.invalidate()
     }
 
+    func reset() {
+        timer?.invalidate()
+        guard let battery = battery else { return }
+        self.battery = battery.copy(chargeLevel: 0, isCharging: false)
+        self.updateHandler?(battery)
+    }
+
     func juice() {
         guard canLoad, !isCharging else {
             return
@@ -89,8 +97,8 @@ class BatterySimulator {
         guard let battery = battery?.copy(chargeLevel: 100, isCharging: false) else {
             return
         }
-        self.updateHandler?(battery)
         self.battery = battery
+        self.updateHandler?(battery)
     }
 
     func toggleChargingIfNeeded() {

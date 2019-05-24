@@ -21,7 +21,7 @@ class HomeViewController: UIViewController {
     }()
     lazy var loadingViewController = LoadingViewController()
     lazy var batteryViewController = BatteryViewController()
-    lazy var batterySimulator = BatterySimulator()
+    var batterySimulator: BatterySimulator { return BatterySimulator.shared }
 
     // MARK: View Life Cycle
     override func viewDidLoad() {

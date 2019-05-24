@@ -18,8 +18,8 @@ class SettingsViewController: UIViewController {
                              powerHandler: ChargeSettingsHandler.shared)
         return PowerSliderViewController(viewModel: vm)
     }()
-
-    lazy var batterySimulator = BatterySimulator()
+    lazy var batteryResetButton = UIButton()
+    var batterySimulator: BatterySimulator { return BatterySimulator.shared }
 
     // MARK: View Life Cycle
     override func viewDidLoad() {
@@ -38,6 +38,19 @@ class SettingsViewController: UIViewController {
     }
 
     private func addResetBatteryButton() {
-        
+        view.addSubview(batteryResetButton)
+        batteryResetButton.addTarget(self,
+                                     action: #selector(SettingsViewController.resetBattery),
+                                     for: .primaryActionTriggered)
+        batteryResetButton.pinTop(to: chargeSettingsViewController.view.bottomAnchor, inset: 20)
+        batteryResetButton.centerX(of: view)
+        batteryResetButton.setConstant(height: 50)
+        batteryResetButton.backgroundColor = .red
+        batteryResetButton.setTitle("Reset battery", for: .normal)
+    }
+
+    // MARK: Actions
+    @objc func resetBattery() {
+        batterySimulator.reset()
     }
 }
