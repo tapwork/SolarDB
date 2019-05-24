@@ -43,6 +43,7 @@ class PowerSliderViewController: UIViewController {
         viewModel.powerHandler.observe {
             self.update()
         }
+        view.layer.cornerRadius = 10
     }
 
     // MARK: Setup

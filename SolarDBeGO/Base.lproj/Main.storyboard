@@ -12,14 +12,14 @@
         <!--Settings-->
         <scene sceneID="VJB-9Z-iQa">
             <objects>
-                <viewController id="26p-Sv-LGZ" customClass="SettingsViewController" customModule="SolarDBeGO" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="26p-Sv-LGZ" customClass="SettingsViewController" customModule="Solar_e_GO" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="S8g-P1-xQP">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="Y1G-a7-8gK"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Settings" id="WwO-GB-CNH">
+                    <tabBarItem key="tabBarItem" title="Settings" image="SettingsIcon" id="WwO-GB-CNH">
                         <color key="badgeColor" name="systemYellowColor" catalog="System" colorSpace="catalog"/>
                     </tabBarItem>
                 </viewController>
@@ -30,14 +30,14 @@
         <!--Battery-->
         <scene sceneID="UJ3-kl-JSq">
             <objects>
-                <viewController id="Bpt-yT-xf8" customClass="HomeViewController" customModule="SolarDBeGO" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Bpt-yT-xf8" customClass="HomeViewController" customModule="Solar_e_GO" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="9sf-rs-dWF">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="LF7-45-271"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Battery" id="Ac9-vL-0bP">
+                    <tabBarItem key="tabBarItem" title="Battery" image="Sun" id="Ac9-vL-0bP">
                         <color key="badgeColor" name="systemYellowColor" catalog="System" colorSpace="catalog"/>
                     </tabBarItem>
                 </viewController>
@@ -66,4 +66,8 @@
             <point key="canvasLocation" x="616" y="508"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="SettingsIcon" width="32" height="32"/>
+        <image name="Sun" width="75" height="75"/>
+    </resources>
 </document>
