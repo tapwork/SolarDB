@@ -42,7 +42,7 @@ struct BatteryViewModel {
 
 class BatteryViewController: UIViewController {
 
-    private lazy var batteryView = BatteryView()
+    private lazy var batteryView = BatteryViewContainer()
 
     // MARK: View Life Cycle
     override func viewDidLoad() {
@@ -76,7 +76,7 @@ class BatteryViewController: UIViewController {
     }
 }
 
-class BatteryView: UIView {
+class BatteryViewContainer: UIView {
 
     private let chargedBarView = UIView()
     private var chargedBarWidthConstraint: NSLayoutConstraint?
