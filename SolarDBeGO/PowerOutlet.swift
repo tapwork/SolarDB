@@ -14,6 +14,10 @@ class PowerOutlet {
     enum State {
         case on
         case off
+
+        mutating func toggle() {
+            self = self == .on ? .off : .on
+        }
     }
 
     private let outlet: HMAccessory
@@ -36,8 +40,14 @@ class PowerOutlet {
         }).first, let power = service.characteristics.filter({
             return $0.characteristicType == HMCharacteristicTypePowerState
         }).first {
-            power.writeValue(state == .on ? 1 : 0) {
-                print($0 ?? "Success")
+            let value = state == .on ? 1 : 0
+            power.writeValue(value) {[weak self] in
+                if let error = $0 {
+                    self?.state?.toggle()
+                    print(error)
+                    return
+                }
+                print("Successfully switched HomeKit device to: \(value)")
             }
         }
     }

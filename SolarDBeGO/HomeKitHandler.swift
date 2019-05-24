@@ -10,7 +10,7 @@ import Foundation
 import HomeKit
 
 protocol HomeKitHandlerDelegate: class {
-    func homeKitHandlerDidUpdate(_ homeKitHandler: HomeKitHandler, outlets: [PowerOutlet])
+    func homeKitHandlerDidUpdate(_ homeKitHandler: HomeKitHandler, outlet: PowerOutlet)
 }
 
 class HomeKitHandler: NSObject {
@@ -18,15 +18,17 @@ class HomeKitHandler: NSObject {
     private lazy var homeManager = HMHomeManager()
     private lazy var accessoryBrowser = HMAccessoryBrowser()
     var home: HMHome?
-    var outlets = [PowerOutlet]() {
+    var outlet: PowerOutlet? {
         didSet {
-            delegate?.homeKitHandlerDidUpdate(self, outlets: outlets)
+            if let outlet = outlet {
+                delegate?.homeKitHandlerDidUpdate(self, outlet: outlet)
+            }
         }
     }
 
     func start() {
         home = nil
-        outlets.removeAll()
+        outlet = nil
         homeManager.delegate = self
     }
 }
@@ -34,9 +36,8 @@ class HomeKitHandler: NSObject {
 extension HomeKitHandler: HMHomeManagerDelegate {
     func homeManagerDidUpdateHomes(_ manager: HMHomeManager) {
         home = manager.homes.filter {$0.name == "e GO Headquarters"}.first
-        if let acc = home?.accessories.first {
-            let outlet = PowerOutlet(outlet: acc)
-            outlets.append(outlet)
+        if let accessory = home?.accessories.first {
+            outlet = PowerOutlet(outlet: accessory)
         }
     }
 }
