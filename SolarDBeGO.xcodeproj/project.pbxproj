@@ -51,7 +51,7 @@
 /* Begin PBXFileReference section */
 		4C0E71FC2296FCED00E87085 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		7239C20B22971FEE00F836FE /* BatterySimulator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatterySimulator.swift; sourceTree = "<group>"; };
-		72BA13DF2296A5CC00DD005B /* SolarDBeGO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SolarDBeGO.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		72BA13DF2296A5CC00DD005B /* Solar e.GO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Solar e.GO.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		72BA13E22296A5CC00DD005B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		72BA13E72296A5CC00DD005B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		72BA13E92296A5CD00DD005B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -120,7 +120,7 @@
 		72BA13E02296A5CC00DD005B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				72BA13DF2296A5CC00DD005B /* SolarDBeGO.app */,
+				72BA13DF2296A5CC00DD005B /* Solar e.GO.app */,
 				72BA13F32296A5CD00DD005B /* SolarDBeGOTests.xctest */,
 				72BA13FE2296A5CD00DD005B /* SolarDBeGOUITests.xctest */,
 			);
@@ -198,7 +198,7 @@
 			);
 			name = SolarDBeGO;
 			productName = SolarDBeGO;
-			productReference = 72BA13DF2296A5CC00DD005B /* SolarDBeGO.app */;
+			productReference = 72BA13DF2296A5CC00DD005B /* Solar e.GO.app */;
 			productType = "com.apple.product-type.application";
 		};
 		72BA13F22296A5CD00DD005B /* SolarDBeGOTests */ = {
@@ -517,7 +517,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = de.tapwork.solardashboard;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Solar e.GO";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -538,7 +538,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = de.tapwork.solardashboard;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Solar e.GO";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
