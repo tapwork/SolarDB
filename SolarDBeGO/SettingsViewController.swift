@@ -49,6 +49,7 @@ class SettingsViewController: UIViewController {
         batteryResetButton.setTitleColor(.gray, for: .highlighted)
         batteryResetButton.backgroundColor = .red
         batteryResetButton.setTitle("Reset battery", for: .normal)
+        batteryResetButton.layer.cornerRadius = 10
     }
 
     // MARK: Actions
