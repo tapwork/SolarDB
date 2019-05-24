@@ -12,6 +12,7 @@ struct VehicleSignals: Codable {
     var batteryLoadingCapacity: Double // i.e. 3.6 kW (one phase 16 A)
     var batteryTotalKwhCapacity: Double // i.e. 24 kWh (Battery size)
     var batteryStateOfCharge: Int // Latest battery level in percent
+    var batteryCharging: String
 }
 
 extension URLSessionConfiguration {
@@ -31,7 +32,7 @@ class API: NSObject, URLSessionDownloadDelegate, URLSessionTaskDelegate {
     private var dataTask : URLSessionDataTask?
     private let baseURL = "https://ego-vehicle-api.azurewebsites.net/api/v1/"
     
-    var signals = VehicleSignals(batteryLoadingCapacity: 0, batteryTotalKwhCapacity: 0, batteryStateOfCharge: 0)
+    var signals = VehicleSignals(batteryLoadingCapacity: 0, batteryTotalKwhCapacity: 0, batteryStateOfCharge: 0, batteryCharging: "no")
     
     var callback: ((_ signals: VehicleSignals) -> ())?
     
@@ -68,7 +69,7 @@ class API: NSObject, URLSessionDownloadDelegate, URLSessionTaskDelegate {
         uploadTask?.resume()
     }
     
-    func data(url: String, stateOfCharge: Double) {
+    func data(url: String, stateOfCharge: Double, charging: Bool) {
         guard let url = URL(string: "\(baseURL)\(url)") else {
             print("Couldn't find JSON!")
             return
@@ -76,7 +77,7 @@ class API: NSObject, URLSessionDownloadDelegate, URLSessionTaskDelegate {
         var request = URLRequest(url: url)
         request.httpMethod = "PATCH"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        let signals = VehicleSignals(batteryLoadingCapacity: API.shared.signals.batteryLoadingCapacity, batteryTotalKwhCapacity: API.shared.signals.batteryTotalKwhCapacity, batteryStateOfCharge: Int(stateOfCharge * 100))
+        let signals = VehicleSignals(batteryLoadingCapacity: API.shared.signals.batteryLoadingCapacity, batteryTotalKwhCapacity: API.shared.signals.batteryTotalKwhCapacity, batteryStateOfCharge: Int(stateOfCharge), batteryCharging: charging ? "yes" : "no")
         print(signals)
         let encoder = JSONEncoder()
         encoder.keyEncodingStrategy = .convertToSnakeCase
@@ -88,8 +89,8 @@ class API: NSObject, URLSessionDownloadDelegate, URLSessionTaskDelegate {
         dataTask?.resume()
     }
     
-    func updateStateOfCharge(_ stateOfCharge: Double) {
-        data(url: "vehicle/signals", stateOfCharge: stateOfCharge)
+    func updateStateOfCharge(_ stateOfCharge: Double, charging: Bool) {
+        data(url: "vehicle/signals", stateOfCharge: stateOfCharge, charging: charging)
     }
     
     func updateSignals(callback: ((_ signals: VehicleSignals) -> ())?) {
@@ -125,6 +126,7 @@ class API: NSObject, URLSessionDownloadDelegate, URLSessionTaskDelegate {
             callback?(signals)
         } catch {
             print("JSON error: \(error)")
+            callback?(signals)
         }
     }
 }

@@ -11,7 +11,7 @@ import HomeKit
 
 class LoadingViewController: UIViewController {
 
-    private lazy var activityIndicator = UIActivityIndicatorView(style: .gray)
+    private lazy var activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
     override func viewDidLoad() {
         super.viewDidLoad()
 

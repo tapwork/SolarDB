@@ -36,8 +36,7 @@ class BatterySimulator {
     }
 
     init() {
-        API.shared.updateSignals {[weak self] signals in
-            guard let self = self else { return }
+        API.shared.updateSignals { signals in
             DispatchQueue.main.async {
                 let level = signals.batteryStateOfCharge
                 let battery = Battery(isCharging: false,
@@ -56,6 +55,10 @@ class BatterySimulator {
 
     func pause() {
         timer?.invalidate()
+        guard let level = battery?.chargeLevel else {
+            return
+        }
+        API.shared.updateStateOfCharge(level, charging: false)
     }
 
     func juice() {
@@ -73,6 +76,7 @@ class BatterySimulator {
                 return
             }
             self.battery = battery.copy(chargeLevel: newLevel, isCharging: true)
+            API.shared.updateStateOfCharge(newLevel, charging: true)
         })
         timer?.fire()
     }
@@ -83,6 +87,7 @@ class BatterySimulator {
             return
         }
         self.updateHandler?(battery)
+        API.shared.updateStateOfCharge(battery.chargeLevel, charging: false)
         self.battery = battery
     }
 }
