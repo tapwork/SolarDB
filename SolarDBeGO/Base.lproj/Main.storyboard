@@ -19,7 +19,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="Y1G-a7-8gK"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Settings" id="WwO-GB-CNH"/>
+                    <tabBarItem key="tabBarItem" title="Settings" id="WwO-GB-CNH">
+                        <color key="badgeColor" name="systemYellowColor" catalog="System" colorSpace="catalog"/>
+                    </tabBarItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wbc-A5-eGG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -35,7 +37,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="LF7-45-271"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Battery" id="Ac9-vL-0bP"/>
+                    <tabBarItem key="tabBarItem" title="Battery" id="Ac9-vL-0bP">
+                        <color key="badgeColor" name="systemYellowColor" catalog="System" colorSpace="catalog"/>
+                    </tabBarItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cG9-G1-CBA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -45,10 +49,12 @@
         <scene sceneID="PXk-Uq-rgh">
             <objects>
                 <tabBarController id="XAa-Ay-hH5" customClass="RootViewController" customModule="SolarDBeGO" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="gII-Bb-ufr">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" id="gII-Bb-ufr">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="tintColor" red="1" green="0.99997437000274658" blue="0.3436964897260274" alpha="0.84705882352941175" colorSpace="calibratedRGB"/>
+                        <color key="barTintColor" name="systemYellowColor" catalog="System" colorSpace="catalog"/>
                     </tabBar>
                     <connections>
                         <segue destination="Bpt-yT-xf8" kind="relationship" relationship="viewControllers" id="J3E-Bc-Dol"/>
