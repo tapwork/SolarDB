@@ -24,6 +24,7 @@ class SettingsViewController: UIViewController {
     // MARK: View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .black
         addBatterySettingsViewController()
         addResetBatteryButton()
     }

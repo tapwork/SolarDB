@@ -80,7 +80,8 @@ class BatteryView: UIView {
     private let emptyView = UIImageView()
     private let levelView = UIImageView()
     private var levelWidthConstraint: NSLayoutConstraint?
-    let inset: CGFloat = 23.0
+    let leftinset: CGFloat = 22.0
+    let rightinset: CGFloat = 35.0
 
     override init(frame: CGRect) {
         super.init(frame: .zero)
@@ -102,14 +103,14 @@ class BatteryView: UIView {
         emptyView.addSubview(levelView)
         levelView.image = UIImage(named: "green.jpg")
 
-        levelView.pinToEdges(.left, of: emptyView, inset: inset)
+        levelView.pinToEdges(.left, of: emptyView, inset: leftinset)
         levelView.pinToEdges([.top, .bottom], of: emptyView)
         levelWidthConstraint = levelView.widthAnchor.constraint(equalToConstant: 0)
         levelWidthConstraint?.isActive = true
     }
 
     func updateLevel(_ level: CGFloat) {
-        let width = bounds.size.width - (2 * inset)
+        let width = bounds.size.width - leftinset - rightinset
         levelWidthConstraint?.constant = width * (level / 100)
     }
 }
