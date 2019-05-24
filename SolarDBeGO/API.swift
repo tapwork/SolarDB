@@ -84,7 +84,9 @@ class API: NSObject, URLSessionDownloadDelegate, URLSessionTaskDelegate {
         request.httpBody = try? encoder.encode(signals)
         let configuration = URLSessionConfiguration.default
         dataTask = urlSession(with: configuration).dataTask(with: request, completionHandler: { (data, response, error) in
-            print(error ?? "No error")
+            if let error = error {
+                print("ERROR API: \(error)")
+            }
         })
         dataTask?.resume()
     }
@@ -113,7 +115,9 @@ class API: NSObject, URLSessionDownloadDelegate, URLSessionTaskDelegate {
     }
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        print(error ?? "No error")
+        if let error = error {
+            print("ERROR API: \(error)")
+        }
     }
     
     

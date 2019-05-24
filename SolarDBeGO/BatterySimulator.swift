@@ -50,11 +50,15 @@ class BatterySimulator {
     }
 
     var canLoad: Bool {
-        return battery.capacity > 0
+        return battery.capacity > 0 &&
+            ChargeSettingsHandler.shared.watt > 0 &&
+            SolarSimulator.shared.watt > battery.loadingPower &&
+            SolarSimulator.shared.watt > ChargeSettingsHandler.shared.watt
     }
 
     // MARK: Init
     init() {
+        startHomeKit()
         API.shared.updateSignals { signals in
             DispatchQueue.main.async {
                 let level = signals.batteryStateOfCharge
@@ -106,16 +110,7 @@ class BatterySimulator {
 
     func toggleChargingIfNeeded() {
         var state = homeKitHandler.outlet?.state
-        guard SolarSimulator.shared.watt > 0, ChargeSettingsHandler.shared.watt > 0 else {
-            state = .off
-            return
-        }
-        if SolarSimulator.shared.watt >= battery.loadingPower &&
-            SolarSimulator.shared.watt >= ChargeSettingsHandler.shared.watt {
-            state = .on
-        } else {
-            state = .off
-        }
+        state = canLoad ? .on : .off
         homeKitHandler.outlet?.state = state
         state == .on ? juice() : pause()
     }
