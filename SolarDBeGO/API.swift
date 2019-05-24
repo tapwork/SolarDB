@@ -43,11 +43,10 @@ class API: NSObject, URLSessionDownloadDelegate, URLSessionTaskDelegate {
     
     func start(url: String, callback: ((_ signals: VehicleSignals) -> ())?) {
         guard let url = URL(string: "\(baseURL)\(url)") else {
-            print("Couldn't find JSON!")
+            print("ERROR: Couldn't find JSON!")
             return
         }
         guard let callback = callback else {
-            print("Callback needed!")
             return
         }
         self.callback = callback
@@ -58,7 +57,7 @@ class API: NSObject, URLSessionDownloadDelegate, URLSessionTaskDelegate {
     
     func upload(url: String, with data: Data) {
         guard let url = URL(string: "\(baseURL)\(url)") else {
-            print("Couldn't find JSON!")
+            print("ERROR: Couldn't find JSON!")
             return
         }
         var request = URLRequest(url: url)
@@ -71,14 +70,14 @@ class API: NSObject, URLSessionDownloadDelegate, URLSessionTaskDelegate {
     
     func data(url: String, stateOfCharge: Double, charging: Bool) {
         guard let url = URL(string: "\(baseURL)\(url)") else {
-            print("Couldn't find JSON!")
+            print("ERROR: Couldn't find JSON!")
             return
         }
         var request = URLRequest(url: url)
         request.httpMethod = "PATCH"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         let signals = VehicleSignals(batteryLoadingCapacity: API.shared.signals.batteryLoadingCapacity, batteryTotalKwhCapacity: API.shared.signals.batteryTotalKwhCapacity, batteryStateOfCharge: Int(stateOfCharge), batteryCharging: charging ? "yes" : "no")
-        print(signals)
+
         let encoder = JSONEncoder()
         encoder.keyEncodingStrategy = .convertToSnakeCase
         request.httpBody = try? encoder.encode(signals)
@@ -106,14 +105,14 @@ class API: NSObject, URLSessionDownloadDelegate, URLSessionTaskDelegate {
         upload(url: "vehicle/infotainment", with: data)
     }
     
-    func urlSession(_ session: URLSession, task: URLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64) {
-        print("meth: \(String(describing: task.currentRequest?.httpMethod)) • task: \(String(describing: task.currentRequest?.url?.absoluteString)) • bytesSent: \(bytesSent) • totalBytesSent: \(totalBytesSent) • totalBytesExpectedToSend: \(totalBytesExpectedToSend)")
-    }
+//    func urlSession(_ session: URLSession, task: URLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64) {
+//        print("meth: \(String(describing: task.currentRequest?.httpMethod)) • task: \(String(describing: task.currentRequest?.url?.absoluteString)) • bytesSent: \(bytesSent) • totalBytesSent: \(totalBytesSent) • totalBytesExpectedToSend: \(totalBytesExpectedToSend)")
+  //  }
     
-    private func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
-        print(response)
-    }
-    
+//    private func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
+//        print(response)
+//    }
+
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         if let error = error {
             print("ERROR API: \(error)")

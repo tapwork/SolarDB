@@ -29,6 +29,8 @@
 		72FA8D272297EAEC0037AAA2 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FA8D262297EAEC0037AAA2 /* LoadingViewController.swift */; };
 		72FA8D292297EB4A0037AAA2 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FA8D282297EB4A0037AAA2 /* RootViewController.swift */; };
 		72FA8D2B2297ED1E0037AAA2 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FA8D2A2297ED1E0037AAA2 /* SettingsViewController.swift */; };
+		72FA8D2E229806C60037AAA2 /* empty.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 72FA8D2C229806C50037AAA2 /* empty.jpg */; };
+		72FA8D2F229806C60037AAA2 /* green.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 72FA8D2D229806C50037AAA2 /* green.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +80,8 @@
 		72FA8D262297EAEC0037AAA2 /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
 		72FA8D282297EB4A0037AAA2 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		72FA8D2A2297ED1E0037AAA2 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		72FA8D2C229806C50037AAA2 /* empty.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = empty.jpg; sourceTree = "<group>"; };
+		72FA8D2D229806C50037AAA2 /* green.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = green.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +135,8 @@
 			isa = PBXGroup;
 			children = (
 				72DAA15B2296B8FB00FBF335 /* SolarDBeGO.entitlements */,
+				72FA8D2C229806C50037AAA2 /* empty.jpg */,
+				72FA8D2D229806C50037AAA2 /* green.jpg */,
 				72BA13E22296A5CC00DD005B /* AppDelegate.swift */,
 				72BA13E62296A5CC00DD005B /* Main.storyboard */,
 				72BA13E92296A5CD00DD005B /* Assets.xcassets */,
@@ -292,7 +298,9 @@
 			files = (
 				72BA13ED2296A5CD00DD005B /* LaunchScreen.storyboard in Resources */,
 				72BA13EA2296A5CD00DD005B /* Assets.xcassets in Resources */,
+				72FA8D2F229806C60037AAA2 /* green.jpg in Resources */,
 				72BA13E82296A5CC00DD005B /* Main.storyboard in Resources */,
+				72FA8D2E229806C60037AAA2 /* empty.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

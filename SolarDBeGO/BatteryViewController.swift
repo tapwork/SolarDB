@@ -76,18 +76,60 @@ class BatteryViewController: UIViewController {
     }
 }
 
+class BatteryView: UIView {
+    private let emptyView = UIImageView()
+    private let levelView = UIImageView()
+    private var levelWidthConstraint: NSLayoutConstraint?
+    let inset: CGFloat = 23.0
+
+    override init(frame: CGRect) {
+        super.init(frame: .zero)
+        setupViews()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setupViews() {
+        addSubview(emptyView)
+        emptyView.image = UIImage(named: "empty.jpg")
+        emptyView.pinToEdges(of: self)
+        emptyView.setConstant(height: 100)
+        emptyView.setConstant(width: 320)
+        backgroundColor = .black
+
+        emptyView.addSubview(levelView)
+        levelView.image = UIImage(named: "green.jpg")
+
+        levelView.pinToEdges(.left, of: emptyView, inset: inset)
+        levelView.pinToEdges([.top, .bottom], of: emptyView)
+        levelWidthConstraint = levelView.widthAnchor.constraint(equalToConstant: 0)
+        levelWidthConstraint?.isActive = true
+    }
+
+    func updateLevel(_ level: CGFloat) {
+        let width = bounds.size.width - (2 * inset)
+        levelWidthConstraint?.constant = width * (level / 100)
+    }
+}
+
 class BatteryViewContainer: UIView {
 
-    private let chargedBarView = UIView()
-    private var chargedBarWidthConstraint: NSLayoutConstraint?
+    struct Layout {
+        static let padding: CGFloat = 10.0
+    }
+    private let batteryView = BatteryView()
     private let currentLevelLabel = UILabel()
     private let maxBatteryCapacityLabel = UILabel()
     private let titleLabel = UILabel()
 
     override init(frame: CGRect) {
         super.init(frame: .zero)
-        backgroundColor = .lightGray
-        setupChargedBarView()
+        backgroundColor = .black
+
+        setupTitleLabel()
+        setupBatteryView()
         setupLabels()
     }
 
@@ -96,37 +138,41 @@ class BatteryViewContainer: UIView {
     }
 
     // MARK: Update & Setup
-    private func setupChargedBarView() {
-        addSubview(chargedBarView)
-        chargedBarView.backgroundColor = .green
-        chargedBarView.pinToEdges([.left, .top, .bottom], of: self)
-        let constraint = chargedBarView.widthAnchor.constraint(equalToConstant: 0)
-        constraint.isActive = true
-        chargedBarWidthConstraint = constraint
+    private func setupTitleLabel() {
+        addSubview(titleLabel)
+        titleLabel.numberOfLines = 0
+        titleLabel.pinToEdges(.top, of: self, inset: Layout.padding)
+        titleLabel.centerX(of: self)
+        titleLabel.textColor = .white
+    }
+
+    private func setupBatteryView() {
+        addSubview(batteryView)
+        batteryView.pinTop(to: titleLabel.bottomAnchor, inset: Layout.padding)
+        batteryView.centerX(of: self)
     }
 
     private func setupLabels() {
-        addSubview(titleLabel)
-        titleLabel.pinToEdges(.top, of: self, inset: 5)
-        titleLabel.centerX(of: self)
-
         addSubview(currentLevelLabel)
-        currentLevelLabel.center(of: self)
+        currentLevelLabel.pinTop(to: batteryView.bottomAnchor, inset: Layout.padding)
+        currentLevelLabel.centerX(of: self)
+        currentLevelLabel.pinBottom(to: bottomAnchor, inset: Layout.padding)
         currentLevelLabel.numberOfLines = 2
+        currentLevelLabel.textColor = .white
         currentLevelLabel.textAlignment = .center
 
-        maxBatteryCapacityLabel.numberOfLines = 2
-        maxBatteryCapacityLabel.textAlignment = .center
         addSubview(maxBatteryCapacityLabel)
-        maxBatteryCapacityLabel.pinToEdges(.right, of: self, inset: 5)
-        maxBatteryCapacityLabel.centerY(of: self)
+        maxBatteryCapacityLabel.numberOfLines = 2
+        maxBatteryCapacityLabel.textColor = .white
+        maxBatteryCapacityLabel.textAlignment = .center
+        maxBatteryCapacityLabel.pinToEdges(.right, of: self, inset: Layout.padding)
+        maxBatteryCapacityLabel.centerY(of: currentLevelLabel)
     }
 
     func update(vm: BatteryViewModel) {
         titleLabel.text = vm.title
         maxBatteryCapacityLabel.text = vm.maxCapacityText
-        let width = bounds.width * CGFloat(vm.batteryValue / 100)
-        chargedBarWidthConstraint?.constant = width
+        batteryView.updateLevel(CGFloat(vm.batteryValue))
         currentLevelLabel.text = vm.chargingText
     }
     

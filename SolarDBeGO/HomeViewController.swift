@@ -26,7 +26,7 @@ class HomeViewController: UIViewController {
     // MARK: View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        view.backgroundColor = .black
         addSunViewController()
         addBatteryViewController()
         addLoadingViewController()
@@ -48,7 +48,6 @@ class HomeViewController: UIViewController {
         batteryViewController.didMove(toParent: self)
         batteryViewController.view.centerY(of: view)
         batteryViewController.view.pinToEdges([.left, .right], of: view.safeAreaLayoutGuide)
-        batteryViewController.view.setConstant(height: view.bounds.height/3)
     }
 
     private func addBatteryLoadingSimulator() {
