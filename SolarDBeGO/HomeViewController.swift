@@ -9,30 +9,7 @@
 import UIKit
 import HomeKit
 
-class LoadingViewController: UIViewController {
-
-    private lazy var activityIndicator = UIActivityIndicatorView(style: .gray)
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        view.backgroundColor = UIColor(white: 1.0, alpha: 0.8)
-        view.addSubview(activityIndicator)
-        activityIndicator.center(of: view)
-        activityIndicator.hidesWhenStopped = true
-    }
-
-    func stop() {
-        view.isHidden = true
-        activityIndicator.stopAnimating()
-    }
-
-    func start() {
-        view.isHidden = false
-        activityIndicator.startAnimating()
-    }
-}
-
-class RootViewController: UIViewController {
+class HomeViewController: UIViewController {
 
     // MARK: Properties
     lazy var sunViewController = SolarPowerSliderViewController()
@@ -132,7 +109,7 @@ class RootViewController: UIViewController {
     }
 }
 
-extension RootViewController: HomeKitHandlerDelegate {
+extension HomeViewController: HomeKitHandlerDelegate {
      func homeKitHandlerDidUpdate(_ homeKitHandler: HomeKitHandler, outlet: PowerOutlet) {
         toggleOutletIfNeeded()
     }
