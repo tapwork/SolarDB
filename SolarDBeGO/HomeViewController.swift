@@ -12,11 +12,15 @@ import HomeKit
 class HomeViewController: UIViewController {
 
     // MARK: Properties
-    lazy var sunViewController = SolarPowerSliderViewController()
-    lazy var chargeSettingsViewController = ChargeSettingsViewController()
+    lazy var sunViewController: PowerSliderViewController = {
+        let vm = PowerSliderViewModel(title: "Sun: Simulation of power produced by solar",
+                                      backgroundColor: .yellow,
+                                      fontColor: .black,
+                                      powerHandler: SolarSimulator.shared)
+        return PowerSliderViewController(viewModel: vm)
+    }()
     lazy var loadingViewController = LoadingViewController()
     lazy var batteryViewController = BatteryViewController()
-    lazy var homeKitHandler = HomeKitHandler()
     lazy var batterySimulator = BatterySimulator()
 
     // MARK: View Life Cycle
@@ -25,11 +29,9 @@ class HomeViewController: UIViewController {
 
         addSunViewController()
         addBatteryViewController()
-        addBatterySettingsViewController()
-        addBatteryLoadingSimulator()
         addLoadingViewController()
+        addBatteryLoadingSimulator()
         addObserver()
-        startHomeKit()
     }
 
     // MARK: Setup
@@ -50,20 +52,12 @@ class HomeViewController: UIViewController {
         batteryViewController.view.setConstant(height: view.bounds.height/3)
     }
 
-    private func addBatterySettingsViewController() {
-        addChild(chargeSettingsViewController)
-        view.addSubview(chargeSettingsViewController.view)
-        chargeSettingsViewController.didMove(toParent: self)
-        chargeSettingsViewController.view.pinTop(to: batteryViewController.view.bottomAnchor)
-        chargeSettingsViewController.view.pinToEdges([.left, .right], of: view.safeAreaLayoutGuide)
-        chargeSettingsViewController.view.pinBottom(to: view.safeAreaLayoutGuide.bottomAnchor)
-    }
-
     private func addBatteryLoadingSimulator() {
         batterySimulator.canStartCharging = {[weak self] battery in
             guard let self = self else { return }
             self.loadingViewController.stop()
             self.batteryViewController.update(viewModel: BatteryViewModel(battery))
+            self.batterySimulator.toggleChargingIfNeeded()
         }
         batterySimulator.updateHandler = {[weak self] battery in
             guard let self = self else { return }
@@ -80,37 +74,10 @@ class HomeViewController: UIViewController {
 
     private func addObserver() {
         SolarSimulator.shared.observe {
-            self.toggleOutletIfNeeded()
+            self.batterySimulator.toggleChargingIfNeeded()
         }
         ChargeSettingsHandler.shared.observe {
-            self.toggleOutletIfNeeded()
+            self.batterySimulator.toggleChargingIfNeeded()
         }
-    }
-
-    private func startHomeKit() {
-        homeKitHandler.delegate = self
-        homeKitHandler.start()
-    }
-
-    func toggleOutletIfNeeded() {
-        var state = homeKitHandler.outlet?.state
-        guard let battery = batterySimulator.battery, SolarSimulator.shared.watt > 0, ChargeSettingsHandler.shared.watt > 0 else {
-            state = .off
-            return
-        }
-        if SolarSimulator.shared.watt >= battery.loadingPower &&
-            SolarSimulator.shared.watt >= ChargeSettingsHandler.shared.watt {
-            state = .on
-        } else {
-            state = .off
-        }
-        homeKitHandler.outlet?.state = state
-        state == .on ? batterySimulator.juice() : batterySimulator.pause()
-    }
-}
-
-extension HomeViewController: HomeKitHandlerDelegate {
-     func homeKitHandlerDidUpdate(_ homeKitHandler: HomeKitHandler, outlet: PowerOutlet) {
-        toggleOutletIfNeeded()
     }
 }

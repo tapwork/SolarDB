@@ -25,6 +25,7 @@ struct Battery {
 class BatterySimulator {
     private (set) var battery: Battery?
     private var timer: Timer?
+    lazy var homeKitHandler = HomeKitHandler()
     var updateHandler: ((Battery) -> Void)?
     var canStartCharging: ((Battery) -> Void)?
     let api = API()
@@ -35,6 +36,11 @@ class BatterySimulator {
         return false
     }
 
+    var canLoad: Bool {
+        return battery != nil
+    }
+
+    // MARK: Init
     init() {
         API.shared.updateSignals {[weak self] signals in
             guard let self = self else { return }
@@ -50,8 +56,9 @@ class BatterySimulator {
         }
     }
 
-    var canLoad: Bool {
-        return battery != nil
+    private func startHomeKit() {
+        homeKitHandler.delegate = self
+        homeKitHandler.start()
     }
 
     func pause() {
@@ -84,5 +91,28 @@ class BatterySimulator {
         }
         self.updateHandler?(battery)
         self.battery = battery
+    }
+
+    func toggleChargingIfNeeded() {
+        var state = homeKitHandler.outlet?.state
+        guard let battery = battery,
+            SolarSimulator.shared.watt > 0, ChargeSettingsHandler.shared.watt > 0 else {
+            state = .off
+            return
+        }
+        if SolarSimulator.shared.watt >= battery.loadingPower &&
+            SolarSimulator.shared.watt >= ChargeSettingsHandler.shared.watt {
+            state = .on
+        } else {
+            state = .off
+        }
+        homeKitHandler.outlet?.state = state
+        state == .on ? juice() : pause()
+    }
+}
+
+extension BatterySimulator: HomeKitHandlerDelegate {
+    func homeKitHandlerDidUpdate(_ homeKitHandler: HomeKitHandler, outlet: PowerOutlet) {
+        toggleChargingIfNeeded()
     }
 }

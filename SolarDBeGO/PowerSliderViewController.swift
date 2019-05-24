@@ -76,29 +76,3 @@ class PowerSliderViewController: UIViewController {
         viewModel.powerHandler.watt = value
     }
 }
-
-class ChargeSettingsViewController: PowerSliderViewController {
-    required init() {
-        let vm = PowerSliderViewModel(title: "Minimum solar power (kW) to enable charging the car",
-                                      backgroundColor: .blue,
-                                      fontColor: .white,
-                                      powerHandler: ChargeSettingsHandler.shared)
-        super.init(viewModel: vm)
-    }
-
-    required init?(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
-}
-
-class SolarPowerSliderViewController: PowerSliderViewController {
-
-    required init() {
-        let vm = PowerSliderViewModel(title: "Sun: Simulation of power produced by solar",
-                                      backgroundColor: .yellow,
-                                      fontColor: .black,
-                                      powerHandler: SolarSimulator.shared)
-        super.init(viewModel: vm)
-    }
-
-    required init?(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
-}
-

@@ -27,6 +27,8 @@
 		72FA8D232297E5020037AAA2 /* PowerHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FA8D222297E5020037AAA2 /* PowerHandler.swift */; };
 		72FA8D252297EACE0037AAA2 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FA8D242297EACE0037AAA2 /* HomeViewController.swift */; };
 		72FA8D272297EAEC0037AAA2 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FA8D262297EAEC0037AAA2 /* LoadingViewController.swift */; };
+		72FA8D292297EB4A0037AAA2 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FA8D282297EB4A0037AAA2 /* RootViewController.swift */; };
+		72FA8D2B2297ED1E0037AAA2 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FA8D2A2297ED1E0037AAA2 /* SettingsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +76,8 @@
 		72FA8D222297E5020037AAA2 /* PowerHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerHandler.swift; sourceTree = "<group>"; };
 		72FA8D242297EACE0037AAA2 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		72FA8D262297EAEC0037AAA2 /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
+		72FA8D282297EB4A0037AAA2 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
+		72FA8D2A2297ED1E0037AAA2 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +149,8 @@
 				72FA8D202297E4120037AAA2 /* ChargeSettingsHandler.swift */,
 				72FA8D222297E5020037AAA2 /* PowerHandler.swift */,
 				72FA8D262297EAEC0037AAA2 /* LoadingViewController.swift */,
+				72FA8D282297EB4A0037AAA2 /* RootViewController.swift */,
+				72FA8D2A2297ED1E0037AAA2 /* SettingsViewController.swift */,
 			);
 			path = SolarDBeGO;
 			sourceTree = "<group>";
@@ -316,7 +322,9 @@
 				72FA8D212297E4120037AAA2 /* ChargeSettingsHandler.swift in Sources */,
 				72FA8D192297D4C80037AAA2 /* SolarSimulator.swift in Sources */,
 				72FA8D252297EACE0037AAA2 /* HomeViewController.swift in Sources */,
+				72FA8D292297EB4A0037AAA2 /* RootViewController.swift in Sources */,
 				72DAA1772296FCE500FBF335 /* BatteryViewController.swift in Sources */,
+				72FA8D2B2297ED1E0037AAA2 /* SettingsViewController.swift in Sources */,
 				7239C20C22971FEE00F836FE /* BatterySimulator.swift in Sources */,
 				72FA8D272297EAEC0037AAA2 /* LoadingViewController.swift in Sources */,
 				72DAA1552296B52900FBF335 /* String+Watt.swift in Sources */,
