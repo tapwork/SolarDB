@@ -125,6 +125,7 @@ class API: NSObject, URLSessionDownloadDelegate, URLSessionTaskDelegate {
             let signals = try decoder.decode(VehicleSignals.self, from: data)
             callback?(signals)
         } catch {
+            callback?(signals)
             print("JSON error: \(error)")
             callback?(signals)
         }

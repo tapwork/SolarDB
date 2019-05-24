@@ -20,11 +20,25 @@ struct Battery {
                        capacity: self.capacity,
                        loadingPower: self.loadingPower)
     }
+
+    static var empty: Battery {
+        return Battery(isCharging: false,
+                       chargeLevel: 0.0,
+                       capacity: 0.0,
+                       loadingPower: 0.0)
+    }
 }
 
 class BatterySimulator {
-    private (set) var battery: Battery?
+    static let shared = BatterySimulator()
+    private (set) var battery: Battery = .empty {
+        didSet {
+            API.shared.updateStateOfCharge(battery.chargeLevel, charging: battery.isCharging)
+            self.updateHandler?(battery)
+        }
+    }
     private var timer: Timer?
+    lazy var homeKitHandler = HomeKitHandler()
     var updateHandler: ((Battery) -> Void)?
     var canStartCharging: ((Battery) -> Void)?
     let api = API()
@@ -35,6 +49,11 @@ class BatterySimulator {
         return false
     }
 
+    var canLoad: Bool {
+        return battery.capacity > 0
+    }
+
+    // MARK: Init
     init() {
         API.shared.updateSignals { signals in
             DispatchQueue.main.async {
@@ -49,16 +68,19 @@ class BatterySimulator {
         }
     }
 
-    var canLoad: Bool {
-        return battery != nil
+    private func startHomeKit() {
+        homeKitHandler.delegate = self
+        homeKitHandler.start()
     }
 
     func pause() {
         timer?.invalidate()
-        guard let level = battery?.chargeLevel else {
-            return
-        }
-        API.shared.updateStateOfCharge(level, charging: false)
+        self.battery = battery.copy(chargeLevel: battery.chargeLevel, isCharging: false)
+    }
+
+    func reset() {
+        timer?.invalidate()
+        self.battery = battery.copy(chargeLevel: 0, isCharging: false)
     }
 
     func juice() {
@@ -67,27 +89,40 @@ class BatterySimulator {
         }
         timer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true, block: {[weak self] timer in
             guard let self = self else { return }
-            guard let battery = self.battery else { return }
-            self.updateHandler?(battery)
-
-            let newLevel = battery.chargeLevel + 5.0
+            let newLevel = self.battery.chargeLevel + 5.0
             if newLevel >= 100 {
                 self.handleFullyJuiced()
                 return
             }
-            self.battery = battery.copy(chargeLevel: newLevel, isCharging: true)
-            API.shared.updateStateOfCharge(newLevel, charging: true)
+            self.battery = self.battery.copy(chargeLevel: newLevel, isCharging: true)
         })
         timer?.fire()
     }
 
     private func handleFullyJuiced() {
         timer?.invalidate()
-        guard let battery = battery?.copy(chargeLevel: 100, isCharging: false) else {
+        self.battery = battery.copy(chargeLevel: 100, isCharging: false)
+    }
+
+    func toggleChargingIfNeeded() {
+        var state = homeKitHandler.outlet?.state
+        guard SolarSimulator.shared.watt > 0, ChargeSettingsHandler.shared.watt > 0 else {
+            state = .off
             return
         }
-        self.updateHandler?(battery)
-        API.shared.updateStateOfCharge(battery.chargeLevel, charging: false)
-        self.battery = battery
+        if SolarSimulator.shared.watt >= battery.loadingPower &&
+            SolarSimulator.shared.watt >= ChargeSettingsHandler.shared.watt {
+            state = .on
+        } else {
+            state = .off
+        }
+        homeKitHandler.outlet?.state = state
+        state == .on ? juice() : pause()
+    }
+}
+
+extension BatterySimulator: HomeKitHandlerDelegate {
+    func homeKitHandlerDidUpdate(_ homeKitHandler: HomeKitHandler, outlet: PowerOutlet) {
+        toggleChargingIfNeeded()
     }
 }
