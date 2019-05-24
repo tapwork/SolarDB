@@ -22,11 +22,16 @@ extension URLSessionConfiguration {
     }
 }
 
+// https://ego-vehicle-api.azurewebsites.net
 class API: NSObject, URLSessionDownloadDelegate, URLSessionTaskDelegate {
-    
+    static let shared = API()
+
     private var downloadTask : URLSessionDownloadTask?
     private var uploadTask : URLSessionUploadTask?
-    private var baseURL = "https://ego-vehicle-api.azurewebsites.net/api/v1/"
+    private var dataTask : URLSessionDataTask?
+    private let baseURL = "https://ego-vehicle-api.azurewebsites.net/api/v1/"
+    
+    var signals = VehicleSignals(batteryLoadingCapacity: 0, batteryTotalKwhCapacity: 0, batteryStateOfCharge: 0)
     
     var callback: ((_ signals: VehicleSignals) -> ())?
     
@@ -63,14 +68,43 @@ class API: NSObject, URLSessionDownloadDelegate, URLSessionTaskDelegate {
         uploadTask?.resume()
     }
     
-    func signals(callback: ((_ signals: VehicleSignals) -> ())?) {
-        start(url: "vehicle/signals") { (signals) in
-            callback?(signals)
+    func data(url: String, stateOfCharge: Double) {
+        guard let url = URL(string: "\(baseURL)\(url)") else {
+            print("Couldn't find JSON!")
+            return
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "PATCH"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        let signals = VehicleSignals(batteryLoadingCapacity: API.shared.signals.batteryLoadingCapacity, batteryTotalKwhCapacity: API.shared.signals.batteryTotalKwhCapacity, batteryStateOfCharge: Int(stateOfCharge * 100))
+        print(signals)
+        let encoder = JSONEncoder()
+        encoder.keyEncodingStrategy = .convertToSnakeCase
+        request.httpBody = try? encoder.encode(signals)
+        let configuration = URLSessionConfiguration.default
+        dataTask = urlSession(with: configuration).dataTask(with: request, completionHandler: { (data, response, error) in
+            print(error ?? "No error")
+        })
+        dataTask?.resume()
+    }
+    
+    func updateStateOfCharge(_ stateOfCharge: Double) {
+        data(url: "vehicle/signals", stateOfCharge: stateOfCharge)
+    }
+    
+    func updateSignals(callback: ((_ signals: VehicleSignals) -> ())?) {
+        start(url: "vehicle/signals") {
+            callback?($0)
+            self.signals = $0
         }
     }
     
+    func updateInfotainement(with data: Data) {
+        upload(url: "vehicle/infotainment", with: data)
+    }
+    
     func urlSession(_ session: URLSession, task: URLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64) {
-        print("bytesSent: \(bytesSent) • totalBytesSent: \(totalBytesSent) • totalBytesExpectedToSend: \(totalBytesExpectedToSend)")
+        print("meth: \(String(describing: task.currentRequest?.httpMethod)) • task: \(String(describing: task.currentRequest?.url?.absoluteString)) • bytesSent: \(bytesSent) • totalBytesSent: \(totalBytesSent) • totalBytesExpectedToSend: \(totalBytesExpectedToSend)")
     }
     
     private func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
@@ -78,7 +112,7 @@ class API: NSObject, URLSessionDownloadDelegate, URLSessionTaskDelegate {
     }
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        print(error)
+        print(error ?? "No error")
     }
     
     

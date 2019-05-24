@@ -60,12 +60,13 @@ class BatteryViewController: UIViewController {
             print("Couldn't generate image from screen")
             return
         }
-        API().upload(url: "vehicle/infotainment", with: data)
+        API.shared.updateInfotainement(with: data)
     }
 
     func update(viewModel: BatteryViewModel) {
         batteryView.update(vm: viewModel)
         updateInfotainment()
+        API.shared.updateStateOfCharge(viewModel.currentLoadingPower)
     }
 
     // MARK: Setup
