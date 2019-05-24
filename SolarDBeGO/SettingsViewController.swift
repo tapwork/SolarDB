@@ -13,7 +13,7 @@ class SettingsViewController: UIViewController {
     // MARK: Properties
     lazy var chargeSettingsViewController: PowerSliderViewController = {
         let vm = PowerSliderViewModel(title: "Minimum solar power (kW) to enable charging the car",
-                             backgroundColor: .green,
+                             backgroundColor: .lightGray,
                              fontColor: .black,
                              powerHandler: ChargeSettingsHandler.shared)
         return PowerSliderViewController(viewModel: vm)

@@ -11,5 +11,5 @@ import Foundation
 class ChargeSettingsHandler: PowerHandler {
 
     static let EGOMaxLoadingPower: Double = 11.0
-    static let shared = SolarSimulator(maxWatt: EGOMaxLoadingPower)
+    static let shared = ChargeSettingsHandler(maxWatt: EGOMaxLoadingPower)
 }
