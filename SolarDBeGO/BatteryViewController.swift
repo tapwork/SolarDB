@@ -28,7 +28,7 @@ struct BatteryViewModel {
         if isCharging {
             return "Current charging power: \(currentLoadingPower.decimalFormatted) kW"
         }
-        return "Battery ready to charge"
+        return "Battery ready to charge with: \(currentLoadingPower.decimalFormatted) kW"
     }
 
     var maxCapacityText: String {

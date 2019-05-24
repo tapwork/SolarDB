@@ -49,8 +49,9 @@ class BatterySimulator {
         return false
     }
 
-    var canLoad: Bool {
+    var shouldLoad: Bool {
         return battery.capacity > 0 &&
+            battery.chargeLevel < 100 &&
             ChargeSettingsHandler.shared.watt > 0 &&
             SolarSimulator.shared.watt > battery.loadingPower &&
             SolarSimulator.shared.watt > ChargeSettingsHandler.shared.watt
@@ -72,23 +73,33 @@ class BatterySimulator {
         }
     }
 
-    private func startHomeKit() {
-        homeKitHandler.delegate = self
-        homeKitHandler.start()
-    }
-
-    func pause() {
-        timer?.invalidate()
-        self.battery = battery.copy(chargeLevel: battery.chargeLevel, isCharging: false)
+    // MARK: Public
+    func toggleChargingIfNeeded() {
+        shouldLoad ? juice() : pause()
+        updateChargeOutlet()
     }
 
     func reset() {
         timer?.invalidate()
         self.battery = battery.copy(chargeLevel: 0, isCharging: false)
+        toggleChargingIfNeeded()
     }
 
-    func juice() {
-        guard canLoad, !isCharging else {
+    // MARK: Private
+
+    private func startHomeKit() {
+        homeKitHandler.delegate = self
+        homeKitHandler.start()
+    }
+
+    private func pause() {
+        timer?.invalidate()
+        self.battery = battery.copy(chargeLevel: battery.chargeLevel, isCharging: false)
+        updateChargeOutlet()
+    }
+
+    private func juice() {
+        guard shouldLoad, !isCharging else {
             return
         }
         timer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true, block: {[weak self] timer in
@@ -105,14 +116,12 @@ class BatterySimulator {
 
     private func handleFullyJuiced() {
         timer?.invalidate()
+        updateChargeOutlet()
         self.battery = battery.copy(chargeLevel: 100, isCharging: false)
     }
 
-    func toggleChargingIfNeeded() {
-        var state = homeKitHandler.outlet?.state
-        state = canLoad ? .on : .off
-        homeKitHandler.outlet?.state = state
-        state == .on ? juice() : pause()
+    private func updateChargeOutlet() {
+        homeKitHandler.outlet?.state = isCharging ? .on : .off
     }
 }
 
