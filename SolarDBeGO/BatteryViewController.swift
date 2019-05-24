@@ -66,7 +66,7 @@ class BatteryViewController: UIViewController {
     func update(viewModel: BatteryViewModel) {
         batteryView.update(vm: viewModel)
         updateInfotainment()
-        API.shared.updateStateOfCharge(viewModel.currentLoadingPower, charging: true)
+        API.shared.updateStateOfCharge(viewModel.batteryValue, charging: true)
     }
 
     // MARK: Setup
